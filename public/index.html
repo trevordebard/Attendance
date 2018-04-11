@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Attendance App!</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
+        <link href="/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div>
+            <input type="text" id="user-name" placeholder="Enter your name"/>
+            <input type="button" id="enter-name-btn" value="Enter"/>
+            <div id="users-list"></div>
+        </div>
+    </body>
+
+    <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyB4kw_3Vuo_b0lZBUtmzAWT13B23A6ecHw",
+            authDomain: "attendance-a2ae4.firebaseapp.com",
+            databaseURL: "https://attendance-a2ae4.firebaseio.com",
+            projectId: "attendance-a2ae4",
+            storageBucket: "attendance-a2ae4.appspot.com",
+            messagingSenderId: "760072756937"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script src="/join.js"></script>
+
+</html>
