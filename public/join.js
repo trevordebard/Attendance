@@ -1,37 +1,40 @@
 // Make connection
-const socket = io.connect('localhost:4000');
-const firebaseRef = firebase.database().ref();
-const directoryRef = firebase.database().ref('directory/');
-
+const socket = io.connect("http://localhost:4000/");
 const join = document.getElementById('enter-name-btn');
 const user = document.getElementById('user-name');
 let usersList = document.getElementById('users-list');
 
-/*
-firebaseRef.child('directory').on('value', (snapshot) => {
-  //console.log(snapshot.val());
-  let users = snapshot.val();
-  console.log(users);
-  console.log(users.user0);
-  for (x in users) {
-    usersList.innerHTML = `<p>${users[x]}</p>`;
-  }
-});*/
 
 join.addEventListener('click', () => {
+  console.log('click');
   socket.emit('new-user', {
     name: user.value,
   });
 });
-  
+
+//Get the id the user is requesting
+var url = document.location.href.split('/');
+let route = url.pop();
+let id = -1;
+if(route.substring(0, 8) == "room?id=") {
+  id = route.substring(8)
+}
+
+
 socket.on('new-user', (data) => {
-  console.log(data.users.length);
-  directoryRef.child(`user${data.users.length}`).set(data.name); //Make the param a variable
-  getUsers(data.users);
+  console.log('im here');
+  let numUsers = 0;
+  //getUsers(data.users);
 });
 
-socket.on('get-users', (data) => {
-  getUsers(data);
+socket.on('fill-page-with-users', (data) => {
+  console.log("yeeyee");
+  console.log(data);
+  html = '';
+  for (let user of data) {
+    html += `<p>${user.name}</p>`;
+  }
+  usersList.innerHTML = html;
 });
 
 socket.on('signed-in', (data) => {
@@ -46,12 +49,3 @@ socket.on('duplicate-attempt', () => {
   alert('You have already logged in with this name');
 });
 
-function getUsers(users) {
-  html = '';
-  console.log(users);
-  for (let i = 0; i < users.length; i++) {
-    html += `<p>${users[i]}</p>`;
-  }
-  console.log(html);
-  usersList.innerHTML = html;
-}
