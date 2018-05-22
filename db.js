@@ -1,6 +1,6 @@
 const pg = require('pg');
 
-const client = new pg.Client('postgres://localhost/attendance_db');
+const client = new pg.Client('***REMOVED***');
 
 /**
  * Establishes connection with the client database

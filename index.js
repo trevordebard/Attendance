@@ -17,7 +17,7 @@ app.get('/:room', (req, res, next) => {
 });
 const port = process.env.PORT || 4000;
 const server = app.listen(port, () => {
-  console.log('listening for requests on port 4000.');
+  console.log('listening for requests on port ' + port);
 });
 
 const io = require('socket.io')(server);
