@@ -42,25 +42,19 @@ io.on('connection', (socket) => {
   }
 
   socket.on('new-user', (data) => {
-    if(!socket.signedIn) {
-      console.log('not signed in');
-      socket.username = data.name;
-      db.addUser(room, data.name, (err, response) => {
-        if(err) {
-          console.log('insert failed');
-          console.log(err);
-        }
-        else { 
-          console.log('somethig');
-          console.log(response);
-          getUsers(room);
-        }
-      })
-    }
-    else {
-      console.log('signed in');
-      socket.emit('signed-in', socket.username);
-    }
+    /**
+     * Add the user to the database
+     */
+    db.addUser(room, data.name, (err, response) => {
+      if(err) {
+        console.log('insert failed');
+        console.log(err);
+      }
+      else { 
+        console.log(response);
+        getUsers(room);
+      }
+    });
   });
 
   socket.on('disconnect', (data) => {
@@ -69,6 +63,9 @@ io.on('connection', (socket) => {
 
   socket.on('create-room', (data) => {
     console.log(`Room ${data.roomId} requested to be created`); 
+    /*
+     * Add the room to the database
+     */
     db.createRoom(data.roomId, (err, res) =>{
       if(err) {
         console.log(err);
