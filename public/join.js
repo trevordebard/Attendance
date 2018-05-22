@@ -1,5 +1,5 @@
 // Make connection
-const socket = io.connect("http://localhost:4000/");
+const socket = io.connect("https://attendance-app-12.herokuapp.com/");
 const join = document.getElementById('enter-name-btn');
 const user = document.getElementById('user-name');
 let usersList = document.getElementById('users-list');

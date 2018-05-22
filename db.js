@@ -1,6 +1,6 @@
 const pg = require('pg');
 
-const client = new pg.Client('postgres://localhost/attendance_db');
+const client = new pg.Client('postgres://aosriwjguxrbzk:027542f3d7a4d279f4b0021455f512e4dca32b5eb1248cd876a70c9ebca0d437@ec2-54-225-107-174.compute-1.amazonaws.com:5432/d9voq6n6jvr5lh?ssl=true');
 
 /**
  * Establishes connection with the client database
