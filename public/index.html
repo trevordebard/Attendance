@@ -1,32 +1,31 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>Attendance App!</title>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
-        <link href="/styles.css" rel="stylesheet" />
-    </head>
-    <body>
-        <div>
-            <input type="text" id="user-name" placeholder="Enter your name"/>
-            <input type="button" id="enter-name-btn" value="Enter"/>
-            <div id="users-list"></div>
-        </div>
-    </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
+    <title>Attendance App</title>
+</head>
+<body>
+    <button id="create-room">Generate room</button>
+</body>
+<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase.js"></script>
+<script>
+    const socket = io.connect('localhost:4000');
+    
+    const createRoom = document.getElementById('create-room');
 
-    <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
-    <script>
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyB4kw_3Vuo_b0lZBUtmzAWT13B23A6ecHw",
-            authDomain: "attendance-a2ae4.firebaseapp.com",
-            databaseURL: "https://attendance-a2ae4.firebaseio.com",
-            projectId: "attendance-a2ae4",
-            storageBucket: "attendance-a2ae4.appspot.com",
-            messagingSenderId: "760072756937"
-        };
-        firebase.initializeApp(config);
-    </script>
-    <script src="/join.js"></script>
-
+    //Generate random room number and emit that to the socket
+    createRoom.addEventListener('click', () => {
+        let id = Math.random().toString(36).substr(2, 5);
+        let z = document.createElement('p');
+        z.innerHTML = id;
+        document.body.appendChild(z);
+        socket.emit('create-room', {
+            roomId: id
+        });
+    });
+</script>
+<script src="../index.js"></script>
 </html>
