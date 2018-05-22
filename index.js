@@ -15,8 +15,8 @@ app.get('/room', (req,res) => {
 app.get('/:room', (req, res, next) => {  
   res.redirect('/room?id='+req.params.room);
 });
-
-const server = app.listen(4000, () => {
+const port = process.env.PORT || 4000;
+const server = app.listen(port, () => {
   console.log('listening for requests on port 4000.');
 });
 
