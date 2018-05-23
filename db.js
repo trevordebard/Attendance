@@ -54,8 +54,8 @@ const getUsers = (room, cb) => {
  * @param {string} user 
  * @param {function} cb 
  */
-const addUser = (room, user, cb) => {
-  client.query(`INSERT INTO users (name, roomid) VALUES ('${user}', '${room}');`, (err, result) => {
+const addUser = (room, user, session, cb) => {
+  client.query(`INSERT INTO users (name, roomid, session) VALUES ('${user}', '${room}', '${session}');`, (err, result) => {
     if(err) {
       return cb(err);
     }
@@ -63,10 +63,41 @@ const addUser = (room, user, cb) => {
   });
 };
 
+const doesRoomExist = (room, cb) => {
+  client.query(`SELECT roomid FROM rooms WHERE roomid='${room}';`, (err, result) => {
+    if(err) {
+      return cb(err, false);
+    }
+    if(result.rows.length == 0) {
+      return cb(null, false)
+    }
+    if(result.rows.length == 1) {
+      return cb(null, true)
+    }
+    cb(null, false);
+  })
+};
+
+const doesSessionExist = (room, session, cb) => {
+  client.query(`SELECT session FROM users WHERE roomId = '${room}' and session = '${session}' LIMIT 1;`, (err, result) => {
+    if(err) {
+      return cb(err, false);
+    }
+    console.log(result.rows);
+    if(result.rows.length > 0) {
+      return cb(null, true);
+    }
+    return cb(null, false);
+  })
+}
+
+
 
 module.exports = {
     connect,
     createRoom,
     getUsers,
-    addUser
+    addUser,
+    doesRoomExist,
+    doesSessionExist
 };

@@ -13,7 +13,8 @@
 <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase.js"></script>
 <script>
     const socket = io.connect('https://attendance-app-12.herokuapp.com/');
-    
+    //const socket = io.connect('http://localhost:4000');
+
     const createRoom = document.getElementById('create-room');
 
     //Generate random room number and emit that to the socket

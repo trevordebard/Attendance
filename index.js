@@ -1,30 +1,54 @@
 const express = require('express');
 const app = express();
 const socket = require('socket.io');
+var session = require("express-session")({
+  secret: "my-secret",
+  resave: true,
+  saveUninitialized: true
+});
+const sharedsession = require("express-socket.io-session");
 const db  = require('./db');
 
-db.connect();
+db.connect(); //connect to the database
 
+app.use(session);
 app.use(express.static(__dirname + '/public'));
 
 app.get('/room', (req,res) => {
-  //req.query.room
-  res.sendFile(__dirname + '/public/room.html');
+  req.session.uid = req.sessionID;
+  console.log('eventually ');
+  console.log(req.session);
+  if(!req.query.id) {
+    return res.send('Please enter the room you would like to join');
+  }
+  db.doesRoomExist(req.query.id, (err, response)=> {
+    if(err || !response) {
+      console.log(err); 
+      res.send('Whoops! It appears that room does not exist.')
+    }
+    else {
+      res.sendFile(__dirname + '/public/room.html');
+    }
+  });
 });
 
-app.get('/:room', (req, res, next) => {  
+app.get('/:room', (req, res, next) => { 
   res.redirect('/room?id='+req.params.room);
 });
+ 
 const port = process.env.PORT || 4000;
 const server = app.listen(port, () => {
   console.log('listening for requests on port ' + port);
 });
 
 const io = require('socket.io')(server);
-
+io.use(sharedsession(session));
 io.on('connection', (socket) => {
   //Get the id the user is requesting
-  //console.log(socket.handshake)
+  console.log('connected');
+  //console.log(socket.handshake.session);
+  const session = socket.handshake.session.uid;
+
   let url = socket.handshake.headers.referer.split('/');
   let route = url.pop();
   let id = -1;
@@ -42,17 +66,28 @@ io.on('connection', (socket) => {
   }
 
   socket.on('new-user', (data) => {
-    /**
-     * Add the user to the database
-     */
-    db.addUser(room, data.name, (err, response) => {
+    db.doesSessionExist(room, session, (err, response) => {
       if(err) {
-        console.log('insert failed');
-        console.log(err);
+        console.log('Error determining whether session exists');
       }
-      else { 
-        console.log(response);
-        getUsers(room);
+      else {
+        if(response) {
+          socket.emit('already-signed-in');
+        }
+        else {
+          /**
+           * Add the user to the database
+           */
+          db.addUser(room, data.name, socket.handshake.session.uid, (err, response) => {
+            if(err) {
+              console.log('insert failed');
+              console.log(err);
+            }
+            else { 
+              getUsers(room);
+            }
+          });
+        }
       }
     });
   });
