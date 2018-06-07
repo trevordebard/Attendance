@@ -1,4 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=Archivo+Narrow|Merriweather:300');
+/*@import url('https://fonts.googleapis.com/css?family=Archivo+Narrow|Merriweather:300');*/
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Raleway');
+:root {
+  --title-font-family: 'Raleway', sans-serif;;
+  --body-font-family: 'Montserrat', sans-serif;
+}
 * {
   box-sizing: border-box;
 }
@@ -17,7 +22,7 @@ hr {
   margin-bottom: 15px;
 }
 h3 {
-  font-family: 'Archivo Narrow', sans-serif;
+  font-family: var(--title-font-family);
   margin-top: 0;
 }
 #code-header {
@@ -30,7 +35,7 @@ h3 {
   margin-top: 10px;
   margin-bottom: 10px;
   font-size: .45em;
-  font-family: 'Merriweather', serif;
+  font-family: var(--body-font-family);
   font-style: italic;
 }
 .url-link {
@@ -65,7 +70,7 @@ h3 {
 }
 
 .box input {
-  font-family: sans-serif;
+  font-family: var(--body-font-family);
   background: #f2f2f2;
   width: 100%;
   border: 0;
@@ -76,7 +81,7 @@ h3 {
 }
 
 .box button {
-  font-family: sans-serif;
+  font-family: var(--body-font-family);
   text-transform: uppercase;
   background: #8D44AD;
   width: 100%;
@@ -91,7 +96,7 @@ h3 {
   background: #AB69C8;
 }
 #or {
-  font-family: 'Merriweather', serif;
+  font-family: var(--body-font-family);
 }
 .hide {
   display: none;

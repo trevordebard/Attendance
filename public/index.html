@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Song+Myung" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Attendance App</title>
 </head>
@@ -23,6 +22,8 @@
         </div>
         <div id="enter-name" class="box hide">
             <input id="user-name" type="text" placeholder="Enter your name">
+            <h3 id="success-message" class="hide">Your name was submitted!</h3>
+            <h3 id="fail-message" class="hide">You may only sign in once!</h3>
         </div>
         <div id="room-view" class="box animated fadeInLeft hide">
             <h3>Your room code is: <span id='room-code-view' class='url-link'></span></h3>
@@ -81,12 +82,15 @@
         document.querySelector('#enter-name').classList.add('fadeInRight');
         socket.emit('join-room', enterRoomInput.value);
     });
+    
+    socket.on('room-does-not-exist', () => {
+        document.querySelector('#box-home').classList.add('animated');
+        document.querySelector('#box-home').classList.toggle('fadeInLeft');
+        document.querySelector('#box-home').classList.add('shake');
+    });
+
     socket.on('alert', ()=>{
         console.log('ALERT');
-    });
-    socket.on('already-signed-in', () => {
-        console.log('hit it');
-        alert('You can only sign in once');
     });
     socket.on('fill-page-with-users', (data) => {
         html = '';
@@ -95,7 +99,13 @@
         }
         document.getElementById('users-list').innerHTML = html;
     });
-
+    socket.on('successfull-sign-in', () => {
+        document.getElementById('success-message').classList.toggle('hide');
+    })
+    
+    socket.on('already-signed-in', () => {
+        document.getElementById('fail-message').classList.toggle('hide');
+    });
     const enterNameInput = document.getElementById('user-name');
     enterNameInput.addEventListener('keyup', (e)=> {
         e.preventDefault();
@@ -104,6 +114,7 @@
                 room: enterRoomInput.value,
                 name: enterNameInput.value
             });
+            enterNameInput.classList.toggle('hide');
         }
     });
 </script>
