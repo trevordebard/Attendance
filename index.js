@@ -84,6 +84,7 @@ io.on('connection', (socket) => {
             }
             else { 
               getUsers(data.room);
+              socket.emit('successfull-sign-in')
             }
           });
         }
@@ -125,7 +126,8 @@ io.on('connection', (socket) => {
     db.doesRoomExist(roomId, (err, response)=> {
       if(err || !response) {
         console.log(err); 
-        console.log('Whoops It appears that room does not exist.')
+        console.log('Whoops It appears that room does not exist.');
+        socket.emit('room-does-not-exist');
       }
       else {
         socket.emit('room-exists');
