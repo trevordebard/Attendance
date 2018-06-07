@@ -79,6 +79,8 @@ const doesRoomExist = (room, cb) => {
 };
 
 const doesSessionExist = (room, session, cb) => {
+  console.log(room);
+  console.log(session);
   client.query(`SELECT session FROM users WHERE roomId = '${room}' and session = '${session}' LIMIT 1;`, (err, result) => {
     if(err) {
       return cb(err, false);
