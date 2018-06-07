@@ -5,28 +5,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Song+Myung" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <title>Attendance App</title>
 </head>
 <body>
-    <button id="create-room">Generate room</button>
+    <div class="container">
+        <div id="box-home" class="box animated fadeInLeft">
+            <h3>Sign Me In</h3>
+            <hr>
+            <div class="content">
+                <button id="create-room">Generate room</button>
+                <p id="or">- or -</p>
+                <input type="text" id="room-code" placeholder="Enter room code"/>
+            </div>
+        </div>
+        <div id="enter-name" class="box hide">
+            <input id="user-name" type="text" placeholder="Enter your name">
+        </div>
+        <div id="room-view" class="box animated fadeInLeft hide">
+            <h3>Your room code is: <span id='room-code-view' class='url-link'></span></h3>
+            <hr>
+            <div id="users-list">
+                
+            </div>
+        </div>
+    </div>
 </body>
-<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase.js"></script>
 <script>
+    //const url = 'http://localhost:4000';
+    const url = 'https://attendance-app-12.herokuapp.com/'
     const socket = io.connect('https://attendance-app-12.herokuapp.com/');
-    //const socket = io.connect('http://localhost:4000');
+    //const socket = io.connect(url);
 
     const createRoom = document.getElementById('create-room');
 
     //Generate random room number and emit that to the socket
     createRoom.addEventListener('click', () => {
+        document.querySelector('#box-home').classList.add('animated');
+        document.querySelector('#box-home').classList.add('fadeOutLeft');
+        document.querySelector('#room-view').classList.toggle('hide');
+        document.querySelector('#room-view').classList.add('animated');
+        document.querySelector('#room-view').classList.add('fadeInRight');
+     /*    document.querySelector('#code-container').classList.toggle('hide');
+        document.querySelector('#code-container').classList.add('animated');
+        document.querySelector('#code-container').classList.add('fadeInRight');
+        document.querySelector('#users-list-container').classList.toggle('hide');
+        document.querySelector('#users-list-container').classList.add('animated');
+        document.querySelector('#users-list-container').classList.add('fadeInRight'); */
+
         let id = Math.random().toString(36).substr(2, 5);
-        let z = document.createElement('p');
-        z.innerHTML = id;
-        document.body.appendChild(z);
+        console.log((document.getElementById('room-code-view')));
+        console.log('hey');
+        document.getElementById('room-code-view').innerHTML += id;
+        //document.getElementById('code-header').innerHTML += z + '<h3 class="sub-heading">at <span class="url-link">signmein.org</span> to join</h3></h3>';
+        
         socket.emit('create-room', {
             roomId: id
         });
     });
+
+    const enterRoomInput = document.getElementById('room-code');
+    enterRoomInput.addEventListener('keyup', (e)=> {
+        e.preventDefault();
+        if(e.keyCode == 13) {
+            socket.emit('does-room-exist', enterRoomInput.value);
+        }
+    });
+    socket.on('room-exists', () => {
+        document.querySelector('#box-home').classList.add('animated');
+        document.querySelector('#box-home').classList.add('fadeOutLeft');
+        document.querySelector('#enter-name').classList.toggle('hide');
+        document.querySelector('#enter-name').classList.add('animated');
+        document.querySelector('#enter-name').classList.add('fadeInRight');
+        socket.emit('join-room', enterRoomInput.value);
+    });
+    socket.on('alert', ()=>{
+        console.log('ALERT');
+    });
+    socket.on('already-signed-in', () => {
+        console.log('hit it');
+        alert('You can only sign in once');
+    });
+    socket.on('fill-page-with-users', (data) => {
+        html = '';
+        for (let user of data) {
+            html += `<p>${user.name}</p>`;
+        }
+        document.getElementById('users-list').innerHTML = html;
+    });
+
+    const enterNameInput = document.getElementById('user-name');
+    enterNameInput.addEventListener('keyup', (e)=> {
+        e.preventDefault();
+        if(e.keyCode == 13) {
+            socket.emit('new-user', {
+                room: enterRoomInput.value,
+                name: enterNameInput.value
+            });
+        }
+    });
 </script>
-<script src="../index.js"></script>
 </html>
