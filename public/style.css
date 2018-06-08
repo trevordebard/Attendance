@@ -56,7 +56,6 @@ h3 {
   grid-column: 1 / 2;
 }
 
-
 .box {
   width: 100vw;
   height: min-content;
@@ -76,8 +75,24 @@ h3 {
   border: 0;
   padding: 15px;
   box-sizing: border-box;
-  font-size: 14px;
+  font-size: 16px;
   border-radius: 0;
+}
+#room-code-input {
+  width: 80%;
+}
+#enter-room-btn {
+  width: 20%;
+  font-size: 2.5rem;
+  vertical-align: middle;
+  color: #8D44AD;
+}
+#enter-room-btn:hover {
+  color: #AB69C8;
+  cursor: pointer;
+}
+#enter-name-btn {
+  margin-top: 15px;
 }
 
 .box button {
@@ -103,7 +118,7 @@ h3 {
 }
 
 body {
-  background: #5289b8; /* fallback for old browsers */
+  background: #8e44ad; /* fallback for old browsers */
   background: -webkit-linear-gradient(right,#8e44ad,#9b59b6);
   background: -o-linear-gradient(right,#8e44ad,#9b59b6);
   background: linear-gradient(to left, #8e44ad, #9b59b6);

@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
     <title>Attendance App</title>
 </head>
@@ -17,11 +18,12 @@
             <div class="content">
                 <button id="create-room">Generate room</button>
                 <p id="or">- or -</p>
-                <input type="text" id="room-code" placeholder="Enter room code"/>
+                <span><input type="text" id="room-code-input" placeholder="Enter room code"/><i id="enter-room-btn" class="fas fa-angle-right"></i></span>
             </div>
         </div>
         <div id="enter-name" class="box hide">
-            <input id="user-name" type="text" placeholder="Enter your name">
+            <input id="enter-name-input" type="text" placeholder="Enter your name">
+            <button id="enter-name-btn">Submit</button></i>
             <h3 id="success-message" class="hide">Your name was submitted!</h3>
             <h3 id="fail-message" class="hide">You may only sign in once!</h3>
         </div>
@@ -35,10 +37,10 @@
     </div>
 </body>
 <script>
-    //const url = 'http://localhost:4000';
+    //const url = 'http://192.168.1.105:4000';
     const url = 'https://attendance-app-12.herokuapp.com/'
     //const socket = io.connect('https://attendance-app-12.herokuapp.com/');
-    const socket = io.connect(url);
+    const socket = io.connect(`${url}`);
 
     const createRoom = document.getElementById('create-room');
 
@@ -67,13 +69,19 @@
         });
     });
 
-    const enterRoomInput = document.getElementById('room-code');
+    const enterRoomInput = document.getElementById('room-code-input');
     enterRoomInput.addEventListener('keyup', (e)=> {
         e.preventDefault();
         if(e.keyCode == 13) {
             socket.emit('does-room-exist', enterRoomInput.value);
         }
     });
+    const enterRoomBtn = document.getElementById('enter-room-btn');
+    enterRoomBtn.addEventListener('click', (e) => {
+        socket.emit('does-room-exist', enterRoomInput.value);
+    });
+
+    
     socket.on('room-exists', () => {
         document.querySelector('#box-home').classList.add('animated');
         document.querySelector('#box-home').classList.add('fadeOutLeft');
@@ -106,7 +114,24 @@
     socket.on('already-signed-in', () => {
         document.getElementById('fail-message').classList.toggle('hide');
     });
-    const enterNameInput = document.getElementById('user-name');
+
+    socket.on('get-location', () => {
+        if (navigator.geolocation) {
+            console.log('wat');
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            console.log("Geolocation is not supported by this browser.");
+        }
+    })
+    
+    const showPosition = (position) => {
+        console.log('Lat: ' + position.coords.latitude); 
+        console.log('Longitude: ' + position.coords.longitude); 
+    }
+
+    const enterNameInput = document.getElementById('enter-name-input');
+    const enterNameBtn = document.getElementById('enter-name-btn');
+    
     enterNameInput.addEventListener('keyup', (e)=> {
         e.preventDefault();
         if(e.keyCode == 13) {
@@ -115,7 +140,16 @@
                 name: enterNameInput.value
             });
             enterNameInput.classList.toggle('hide');
+            enterNameBtn.classList.toggle('hide');
         }
+    });
+    enterNameBtn.addEventListener('click', (e)=> { 
+        socket.emit('new-user', {
+            room: enterRoomInput.value,
+            name: enterNameInput.value
+        });
+        enterNameInput.classList.toggle('hide');
+        enterNameBtn.classList.toggle('hide');
     });
 </script>
 </html>
