@@ -8,7 +8,7 @@ var session = require("express-session")({
 });
 const sharedsession = require("express-socket.io-session");
 const db  = require('./db');
-const location = require('./location')
+//const location = require('../location')
 
 db.connect(); //connect to the database
 
