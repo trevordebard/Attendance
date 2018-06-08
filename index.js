@@ -8,6 +8,7 @@ var session = require("express-session")({
 });
 const sharedsession = require("express-socket.io-session");
 const db  = require('./db');
+const location = require('./location')
 
 db.connect(); //connect to the database
 
@@ -19,9 +20,6 @@ const server = app.listen(port, () => {
 });
 app.use(express.static(__dirname + '/public/'));
 
-app.get('/', (req,res)=> {
-  console.log('yo');
-})
 app.get('/join/:room', (req, res) => { 
   req.session.uid = req.sessionID;
   console.log('eventually ');
@@ -54,6 +52,9 @@ io.use(sharedsession(session));
 io.on('connection', (socket) => {
   //Get the id the user is requesting
   console.log('connected');
+
+  socket.emit('get-location');
+
   console.log('OG Session: ' + socket.handshake.session.uid);
   if(socket.handshake.session.uid == null) {
     socket.handshake.session.uid = socket.id;
