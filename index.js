@@ -50,17 +50,18 @@ app.get('/join/:room', (req, res) => {
 });
 
 const io = require('socket.io')(server);
-io.use(sharedsession(session, ));
+io.use(sharedsession(session));
 io.on('connection', (socket) => {
   //Get the id the user is requesting
   console.log('connected');
+  console.log('OG Session: ' + socket.handshake.session.uid);
   if(socket.handshake.session.uid == null) {
     socket.handshake.session.uid = socket.id;
     socket.handshake.session.save();
   }
-  console.log(socket.handshake.session);
   const session = socket.handshake.session.uid;
-  console.log('session socket');
+
+  console.log('Post connect session: ' + session);
  
 
   socket.on('new-user', (data) => {
