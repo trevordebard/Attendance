@@ -8,21 +8,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>Attendance App</title>
 </head>
 <body>
     <div class="container">
-        <div id="box-home" class="box animated fadeInLeft">
+        <div id="box-home" class="box animated">
             <h3>Sign Me In</h3>
             <hr>
             <div class="content">
                 <button id="create-room">Generate room</button>
                 <p id="or">- or -</p>
                 <span><input type="text" id="room-code-input" placeholder="Enter room code"/><i id="enter-room-btn" class="fas fa-angle-right"></i></span>
+                <p id="room-code-empty" class="box-validation hide">You must enter a room code.</p>
+                <p id="room-code-invalid" class="box-validation hide">Sorry, that room does not exist.</p>
             </div>
         </div>
-        <div id="enter-name" class="box hide">
+        <div id="enter-name-box" class="box hide">
             <input id="enter-name-input" type="text" placeholder="Enter your name">
+            <p id="enter-name-empty" class="box-validation hide">You must enter a room code.</p>
             <button id="enter-name-btn">Submit</button></i>
             <h3 id="success-message" class="hide">Your name was submitted!</h3>
             <h3 id="fail-message" class="hide">You may only sign in once!</h3>
@@ -43,24 +47,18 @@
     const socket = io.connect(`${url}`);
 
     const createRoom = document.getElementById('create-room');
+    const boxHome = document.getElementById('box-home');
+    const roomView = document.querySelector('#room-view');
 
     //Generate random room number and emit that to the socket
     createRoom.addEventListener('click', () => {
-        document.querySelector('#box-home').classList.add('animated');
-        document.querySelector('#box-home').classList.add('fadeOutLeft');
-        document.querySelector('#room-view').classList.toggle('hide');
-        document.querySelector('#room-view').classList.add('animated');
-        document.querySelector('#room-view').classList.add('fadeInRight');
-     /*    document.querySelector('#code-container').classList.toggle('hide');
-        document.querySelector('#code-container').classList.add('animated');
-        document.querySelector('#code-container').classList.add('fadeInRight');
-        document.querySelector('#users-list-container').classList.toggle('hide');
-        document.querySelector('#users-list-container').classList.add('animated');
-        document.querySelector('#users-list-container').classList.add('fadeInRight'); */
+        boxHome.classList.add('animated');
+        boxHome.classList.add('fadeOutLeft');
+        roomView.classList.toggle('hide');
+        roomView.classList.add('animated');
+        roomView.classList.add('fadeInRight');
 
         let id = Math.random().toString(36).substr(2, 5);
-        console.log((document.getElementById('room-code-view')));
-        console.log('hey');
         document.getElementById('room-code-view').innerHTML += id;
         //document.getElementById('code-header').innerHTML += z + '<h3 class="sub-heading">at <span class="url-link">signmein.org</span> to join</h3></h3>';
         
@@ -70,36 +68,63 @@
     });
 
     const enterRoomInput = document.getElementById('room-code-input');
+    const roomCodeEmpty = document.getElementById('room-code-empty');
+    const roomCodeInvalid = document.getElementById('room-code-invalid');
+
     enterRoomInput.addEventListener('keyup', (e)=> {
         e.preventDefault();
+       
         if(e.keyCode == 13) {
-            socket.emit('does-room-exist', enterRoomInput.value);
+            if(enterRoomInput.value == "") {
+                roomCodeEmpty.classList.remove('hide');
+                roomCodeInvalid.classList.add('hide');
+                shakeElement(boxHome);
+            }
+            else {
+                boxHome.classList.add('animated');
+                socket.emit('does-room-exist', enterRoomInput.value);
+            }
         }
     });
     const enterRoomBtn = document.getElementById('enter-room-btn');
     enterRoomBtn.addEventListener('click', (e) => {
-        socket.emit('does-room-exist', enterRoomInput.value);
+        if(enterRoomInput.value == "") {
+                roomCodeEmpty.classList.remove('hide');
+                roomCodeInvalid.classList.add('hide');
+                shakeElement(boxHome);
+            }
+            else {
+                socket.emit('does-room-exist', enterRoomInput.value);
+            }
     });
 
-    
+    const enterNameBox = document.getElementById('enter-name-box');
     socket.on('room-exists', () => {
-        document.querySelector('#box-home').classList.add('animated');
-        document.querySelector('#box-home').classList.add('fadeOutLeft');
-        document.querySelector('#enter-name').classList.toggle('hide');
-        document.querySelector('#enter-name').classList.add('animated');
-        document.querySelector('#enter-name').classList.add('fadeInRight');
+        $(boxHome).addClass('animated fadeOutLeft').one('webkitAnimationEnd` mozAnimationEnd MSAnimationEnd oanimationend animationend', () => {
+            $(boxHome).removeClass('animated fadeOutLeft');
+            boxHome.classList.add('hide');
+        });
+        
+        //enterNameBox.classList.add('animated');
+        enterNameBox.classList.toggle('hide');
+        //enterNameBox.classList.add('fadeInRight');
+        $(enterNameBox).addClass('animated fadeInRight').one('webkitAnimationEnd` mozAnimationEnd MSAnimationEnd oanimationend animationend', () => {
+            $(enterNameBox).removeClass('animated fadeInRight');
+        });
+
         socket.emit('join-room', enterRoomInput.value);
     });
     
     socket.on('room-does-not-exist', () => {
-        document.querySelector('#box-home').classList.add('animated');
-        document.querySelector('#box-home').classList.toggle('fadeInLeft');
-        document.querySelector('#box-home').classList.add('shake');
+        shakeElement(boxHome);
+        roomCodeInvalid.classList.remove('hide');
+        roomCodeEmpty.classList.add('hide');
     });
 
     socket.on('alert', ()=>{
         console.log('ALERT');
     });
+
     socket.on('fill-page-with-users', (data) => {
         html = '';
         for (let user of data) {
@@ -107,40 +132,53 @@
         }
         document.getElementById('users-list').innerHTML = html;
     });
+
     socket.on('successfull-sign-in', () => {
+        enterNameEmpty.classList.add('hide');
         document.getElementById('success-message').classList.toggle('hide');
     })
     
     socket.on('already-signed-in', () => {
+        enterNameEmpty.classList.add('hide');
         document.getElementById('fail-message').classList.toggle('hide');
     });
 
-    socket.on('get-location', () => {
+
+   /*  socket.on('get-location', () => {
         if (navigator.geolocation) {
             console.log('wat');
             navigator.geolocation.getCurrentPosition(showPosition);
         } else {
             console.log("Geolocation is not supported by this browser.");
         }
-    })
+    }) 
     
     const showPosition = (position) => {
         console.log('Lat: ' + position.coords.latitude); 
         console.log('Longitude: ' + position.coords.longitude); 
     }
+    */
 
     const enterNameInput = document.getElementById('enter-name-input');
     const enterNameBtn = document.getElementById('enter-name-btn');
+    const enterNameEmpty = document.getElementById('enter-name-empty');
     
     enterNameInput.addEventListener('keyup', (e)=> {
         e.preventDefault();
         if(e.keyCode == 13) {
-            socket.emit('new-user', {
-                room: enterRoomInput.value,
-                name: enterNameInput.value
-            });
-            enterNameInput.classList.toggle('hide');
-            enterNameBtn.classList.toggle('hide');
+            if(enterNameInput.value == "") {
+                enterNameEmpty.classList.remove('hide');
+                console.log(enterNameBox);
+                shakeElement(enterNameBox);
+            }
+            else {
+                socket.emit('new-user', {
+                    room: enterRoomInput.value,
+                    name: enterNameInput.value
+                });
+                enterNameInput.classList.toggle('hide');
+                enterNameBtn.classList.toggle('hide');
+            }
         }
     });
     enterNameBtn.addEventListener('click', (e)=> { 
@@ -151,5 +189,12 @@
         enterNameInput.classList.toggle('hide');
         enterNameBtn.classList.toggle('hide');
     });
+
+    const shakeElement = (element) => {
+        $(element).addClass('animated shake').one('webkitAnimationEnd` mozAnimationEnd MSAnimationEnd oanimationend animationend', () => {
+            $(element).removeClass('animated shake');
+        });
+    }
+    
 </script>
 </html>
