@@ -1,6 +1,8 @@
 const express = require('express');
+const dotenv = require('dotenv');
 const app = express();
 const socket = require('socket.io');
+dotenv.config();
 var session = require("express-session")({
   secret: "my-secret",
   resave: true,
@@ -15,8 +17,9 @@ db.connect(); //connect to the database
 app.use(session);
 
 const port = process.env.PORT || 4000;
+
 const server = app.listen(port, () => {
-  console.log('listening for requests on port ' + port);
+  console.log(`listening for requests on port ${port}`);
 });
 app.use(express.static(__dirname + '/public/'));
 
