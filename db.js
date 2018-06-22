@@ -1,6 +1,6 @@
 const pg = require('pg');
 
-const client = new pg.Client('***REMOVED***');
+const client = new pg.Client(process.env.DB_URL);
 
 /**
  * Establishes connection with the client database

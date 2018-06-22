@@ -41,9 +41,8 @@
     </div>
 </body>
 <script>
-    //const url = 'http://192.168.1.105:4000';
-    const url = 'https://attendance-app-12.herokuapp.com/'
-    //const socket = io.connect('https://attendance-app-12.herokuapp.com/');
+    //url = 'localhost:4000'
+    url = 'https://attendance-app-12.herokuapp.com/'
     const socket = io.connect(`${url}`);
 
     const createRoom = document.getElementById('create-room');
@@ -142,22 +141,6 @@
         enterNameEmpty.classList.add('hide');
         document.getElementById('fail-message').classList.toggle('hide');
     });
-
-
-   /*  socket.on('get-location', () => {
-        if (navigator.geolocation) {
-            console.log('wat');
-            navigator.geolocation.getCurrentPosition(showPosition);
-        } else {
-            console.log("Geolocation is not supported by this browser.");
-        }
-    }) 
-    
-    const showPosition = (position) => {
-        console.log('Lat: ' + position.coords.latitude); 
-        console.log('Longitude: ' + position.coords.longitude); 
-    }
-    */
 
     const enterNameInput = document.getElementById('enter-name-input');
     const enterNameBtn = document.getElementById('enter-name-btn');
