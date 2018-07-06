@@ -1,29 +1,41 @@
+
+
 /*@import url('https://fonts.googleapis.com/css?family=Archivo+Narrow|Merriweather:300');*/
-@import url('https://fonts.googleapis.com/css?family=Montserrat|Raleway');
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Fira+Sans');
 :root {
-  --title-font-family: 'Raleway', sans-serif;;
-  --body-font-family: 'Montserrat', sans-serif;
+  --title-font-family: 'Fira+Sans' !important;
+  --body-font-family: 'Montserrat' !important;
 }
 * {
   box-sizing: border-box;
 }
 .container {
-  width: 360px;
   padding: 8% 0 0;
   margin: auto;
   display: grid;
+  width: 500px;
+}
+/* Portrait and Landscape */
+@media only screen 
+  and (min-device-width: 375px) 
+  and (max-device-width: 667px) 
+  and (-webkit-min-device-pixel-ratio: 2) {
+    .container {
+      width: 360px
+    }
+
 }
 
-hr {
+/* hr {
   height: 1px;
   background: #333;
   background-image: linear-gradient(to right, #ccc, #333, #ccc);
   border: 0;
   margin-bottom: 15px;
-}
-h3 {
-  font-family: var(--title-font-family);
-  margin-top: 0;
+} */
+.header {
+  font-family: var(--title-font-family) !important;
+  margin-top: 0 !important;
 }
 #code-header {
   margin-top: 0;
@@ -35,8 +47,7 @@ h3 {
   margin-top: 10px;
   margin-bottom: 10px;
   font-size: .45em;
-  font-family: var(--body-font-family);
-  font-style: italic;
+  font-family: var(--body-font-family) !important;
 }
 .url-link {
   font-style: normal;
@@ -59,13 +70,18 @@ h3 {
 .box {
   width: 100vw;
   height: min-content;
+  max-height: 600px;
   position: relative;
   background: white;
   max-width: 360px;
   margin: 0 auto;
-  padding: 45px 45px 45px 45px;
+  padding: 30px 45px 45px 45px;
   text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+.box-room {
+  width: 100%;
+  max-width: none;
 }
 
 .box input {
@@ -111,6 +127,7 @@ h3 {
   color: #FFFFFF;
   font-size: 14px;
   cursor: pointer;
+
 }
 
 .box button:hover,.box button:active,.box button:focus {
@@ -118,19 +135,36 @@ h3 {
 }
 #or {
   font-family: var(--body-font-family);
+
 }
 .hide {
   display: none;
 }
 
 body {
-  background: #8e44ad; /* fallback for old browsers */
-  background: -webkit-linear-gradient(right,#8e44ad,#9b59b6);
-  background: -o-linear-gradient(right,#8e44ad,#9b59b6);
-  background: linear-gradient(to left, #8e44ad, #9b59b6);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;      
+  background-color: #8e44ad !important;/* fallback for old browsers */
+  background: -webkit-linear-gradient(right,#8e44ad,#9b59b6) !important;
+  background: -o-linear-gradient(right,#8e44ad,#9b59b6) !important;
+  background: linear-gradient(to left, #8e44ad, #9b59b6) !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;      
+}
+.fade-enter {
+  opacity: 0;
+  z-index: 1;
 }
 
+.fade-enter.fade-enter-active {
+  opacity: 1;
+  transition: opacity 250ms ease-in;
+}
 
-
+.grid-cell {
+  padding: .7rem !important;
+}
+.divider {
+  font-family: var(--body-font-family) !important;
+  text-transform: lowercase !important;
+  font-weight: normal !important;
+  font-size: 1.1rem !important;
+}
