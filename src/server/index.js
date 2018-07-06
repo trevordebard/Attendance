@@ -4,7 +4,7 @@ const io = module.exports.io = require('socket.io')(app);
 
 dotenv.config();
 
-const PORT = process.env.PORT || 9045;
+const PORT = process.env.SOCKET_PORT || 9045;
 
 const SocketManager = require('./SocketManager');
 

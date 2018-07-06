@@ -1,2 +1,1 @@
-web: npm run react
-web: npm run server
+web: npm run start
