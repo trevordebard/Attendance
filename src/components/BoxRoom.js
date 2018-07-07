@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
-import { Grid, Header } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 
 const socketURL = process.env.REACT_APP_SOCKET_URL;
 
 export default class BoxRoom extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
     this.state = {
       users: [],
       socket: null,
@@ -21,7 +20,7 @@ export default class BoxRoom extends Component {
     const socket = io(socketURL);
     socket.on('connect', () => {
       console.log('connected');
-      this.state.socket.emit('join-room', this.props.match.match.params.roomCode)
+      this.state.socket.emit('join-room', 'ROOM CODE GOES HERE')
       this.state.socket.on('fill-page-with-users', (users) => {
         console.log(users);
         this.setState({
@@ -37,10 +36,12 @@ export default class BoxRoom extends Component {
 
   render() {
     return (
-      <div className="container">
-        <div id="room-view" className="box box-room">
-          <Header size='small' id="box-room-title">Your room code is: <Header size='huge'>{this.props.match.match.params.roomCode}</Header>
-          </Header>
+        <div className="box box-room">
+        	<div className='header'>
+            <h3 className='header-content' >Your room code is:
+              <h1 className='header-content'> {this.props.match.params.roomCode}</h1>
+            </h3>
+          </div>
           <hr />
           <div>
             <Grid celled columns={4}>
@@ -52,7 +53,6 @@ export default class BoxRoom extends Component {
             </Grid>
           </div>
         </div>
-      </div>
     );
   }
 }

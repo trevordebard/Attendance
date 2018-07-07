@@ -2,34 +2,54 @@ import React, { Component } from 'react';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
 import { createRoom, doesRoomExist } from '../api';
 import { Header, Divider } from 'semantic-ui-react';
+import {Link, Redirect} from 'react-router-dom';
+
+var animationEnd = (function(el) {
+	var animations = {
+		"animation": "animationend",
+		"OAnimation": "oAnimationEnd",
+		"MozAnimation": "mozAnimationEnd",
+	   "WebkitAnimation": "webkitAnimationEnd"
+	}
+
+	for(var t in animations) {
+		if(el.style[t] !== undefined) {
+			return animations[t];
+		}
+	}
+})(document.createElement("fakeelement"));
 
 const roomCode = Math.random().toString(36).substr(2, 5);
 class BoxHome extends Component {
 	constructor(props) {
 		super(props)
+		console.log(props);
 		this.state = {
 			title: 'Sign Me In',
 			roomCodeEmpty: false,
 			roomCodeInvalid: false,
 			roomCodeInput: '',
 			roomCode: roomCode,
+			redirect: false,
 		}
 	}
+
 	handleRoomCodeInput = (e) => {
 		this.setState({
 			roomCodeInput: e.target.value
 		})
 	}
 	handleCreateRoom = () => {
+		
 		createRoom(`${roomCode}`)
 			.then((data) => {
 				if (data.success) {
 					//this.props.toggleBoxHome(false, data.room, 'BoxRoom');
 					//this.props.match.history.push(`/room/${data.room}`);
 					this.setState({
-						roomCode: data.room
+						roomCode: data.room,
+						redirect: true,
 					})
-					this.props.showBoxRoom(data.room);
 				} else {
 					this.setState({
 						title: data,
@@ -75,15 +95,18 @@ class BoxHome extends Component {
 	
 	render() {
 		return (
-			<div className="container">
-				<div id="box-home" className="box">
-					<Header size='medium'>{this.state.title}</Header>
-					<hr />
-					<div className="content">
-						<button id="create-room" onClick={this.handleCreateRoom}>
-							Generate room
-						</button>
-
+			<div className="box">
+				{this.state.redirect && 
+					<Redirect push to={`/room/${roomCode}`} />
+				}
+						<div className='header'>
+							<Header size='medium'>{this.state.title}</Header>
+							<hr/>
+						</div>
+						<div className="content">
+							<button id="create-room" onClick={this.handleCreateRoom}>
+								Generate room
+							</button>
 						<Divider id='or' horizontal>or</Divider>
 
 						<span>
@@ -99,7 +122,7 @@ class BoxHome extends Component {
 						}
 					</div>
 				</div>
-			</div>
+
 			);
 	}
 }

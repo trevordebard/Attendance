@@ -6,15 +6,14 @@
   --title-font-family: 'Fira+Sans' !important;
   --body-font-family: 'Montserrat' !important;
 }
-* {
-  box-sizing: border-box;
+#root{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.container {
-  padding: 8% 0 0;
-  margin: auto;
-  display: grid;
-  width: 500px;
-}
+
 /* Portrait and Landscape */
 @media only screen 
   and (min-device-width: 375px) 
@@ -26,83 +25,99 @@
 
 }
 
-/* hr {
-  height: 1px;
-  background: #333;
-  background-image: linear-gradient(to right, #ccc, #333, #ccc);
-  border: 0;
-  margin-bottom: 15px;
-} */
-.header {
-  font-family: var(--title-font-family) !important;
-  margin-top: 0 !important;
-}
-#code-header {
-  margin-top: 0;
-  margin-bottom: 0;
-  font-size: 3em;
-}
-
-.sub-heading {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  font-size: .45em;
-  font-family: var(--body-font-family) !important;
-}
 .url-link {
   font-style: normal;
   text-decoration: underline;
   font-size: 1.4em;
 }
-#room-view {
-  grid-row: 1 / 2;
-  grid-column: 1 / 2;
-}
-#box-home {
-  grid-row: 1 / 2;
-  grid-column: 1 / 2;
-}
-#enter-name-box {
-  grid-row: 1 / 2;
-  grid-column: 1 / 2;
-}
 
-.box {
-  width: 100vw;
-  height: min-content;
-  max-height: 600px;
+body {
+  background-color: #8e44ad !important;/* fallback for old browsers */
+  background: -webkit-linear-gradient(right,#8e44ad,#9b59b6) !important;
+  background: -o-linear-gradient(right,#8e44ad,#9b59b6) !important;
+  background: linear-gradient(to left, #8e44ad, #9b59b6) !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;  
+}
+/*-----CONTENT POSITIONING-----*/
+.switch-wrapper {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  justify-self: end;
+  transform: translateY(-50px)
+}
+ 
+.switch-wrapper > div {
+  position: absolute;
+}
+/*-------------END CONTENT POSITIONING----------------*/
+
+/*-------------BOX STYLING----------------*/
+.box {
   background: white;
-  max-width: 360px;
-  margin: 0 auto;
   padding: 30px 45px 45px 45px;
   text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  width: 380px;
+  height: 340px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
-.box-room {
+.header {
+  font-family: var(--title-font-family) !important;
   width: 100%;
-  max-width: none;
+}
+.header .header-content {
+  display: inline;
 }
 
-.box input {
+.content {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+}
+/* Generate Room Button */
+.box button {
   font-family: var(--body-font-family);
-  background: #f2f2f2;
+  text-transform: uppercase;
+  background: #8D44AD;
   width: 100%;
   border: 0;
   padding: 15px;
-  box-sizing: border-box;
+  color: #FFFFFF;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.box button:hover,.box button:active,.box button:focus {
+  background: #AB69C8;
+}
+
+#or {
+  font-family: var(--body-font-family);
+}
+/* Enter room code */
+.box input {
+  font-family: var(--body-font-family);
+  background: #f2f2f2;
+  border: 0;
+  padding: 15px;
   font-size: 16px;
-  border-radius: 0;
 }
-#room-code-input {
-  width: 80%;
-}
+
 .box-validation {
   color: red;
   font-family: var(--body-font-family);
   font-size: 13px;
   text-align: left;
 }
+
 #enter-room-btn {
   width: 20%;
   font-size: 2.5rem;
@@ -117,47 +132,12 @@
   margin-top: 15px;
 }
 
-.box button {
-  font-family: var(--body-font-family);
-  text-transform: uppercase;
-  background: #8D44AD;
-  width: 100%;
-  border: 0;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 14px;
-  cursor: pointer;
 
-}
-
-.box button:hover,.box button:active,.box button:focus {
-  background: #AB69C8;
-}
-#or {
-  font-family: var(--body-font-family);
-
-}
+/*----------END BOX STYLING--------------*/
 .hide {
   display: none;
 }
 
-body {
-  background-color: #8e44ad !important;/* fallback for old browsers */
-  background: -webkit-linear-gradient(right,#8e44ad,#9b59b6) !important;
-  background: -o-linear-gradient(right,#8e44ad,#9b59b6) !important;
-  background: linear-gradient(to left, #8e44ad, #9b59b6) !important;
-  -webkit-font-smoothing: antialiased !important;
-  -moz-osx-font-smoothing: grayscale !important;      
-}
-.fade-enter {
-  opacity: 0;
-  z-index: 1;
-}
-
-.fade-enter.fade-enter-active {
-  opacity: 1;
-  transition: opacity 250ms ease-in;
-}
 
 .grid-cell {
   padding: .7rem !important;
@@ -168,3 +148,6 @@ body {
   font-weight: normal !important;
   font-size: 1.1rem !important;
 }
+
+
+
