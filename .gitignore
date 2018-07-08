@@ -1,5 +1,3 @@
 node_modules
-.envbuild/
 build
 .env
-package-lock.json
