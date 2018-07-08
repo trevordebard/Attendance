@@ -7,7 +7,7 @@ const db = require('./db');
   db.connect();
 const routes = require('./routes')(app);
 const dev = app.get('env') !== 'production';
-const PORT = process.env.SERVER_PORT || 4006;
+const PORT = process.env.PORT || 4006;
 
 const server = app.listen(PORT, () => {
   console.log(`listening for requests on port ${PORT}`);

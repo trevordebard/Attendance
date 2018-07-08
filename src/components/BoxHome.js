@@ -27,6 +27,7 @@ class BoxHome extends Component {
 
 			createRoom(`${Math.random().toString(36).substr(2, 5)}`)
 			.then((data) => {
+				console.log(data);
 				if (data.success) {
 					//this.props.toggleBoxHome(false, data.room, 'BoxRoom');
 					//this.props.match.history.push(`/room/${data.room}`);
@@ -68,8 +69,9 @@ class BoxHome extends Component {
 		});
 		doesRoomExist(this.state.roomCodeInput)
 			.then((data) => {
+				console.log(data);
 				if (data.exists === true) {
-					this.props.history.push('join/room/' + data.room)
+					this.props.history.push('join/room/' + data.roomCode)
 				} else {
 					this.setState({
 						roomCodeInvalid: true,
