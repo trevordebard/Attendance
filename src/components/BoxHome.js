@@ -1,38 +1,23 @@
 import React, { Component } from 'react';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
 import { createRoom, doesRoomExist } from '../api';
-import { Header, Divider } from 'semantic-ui-react';
-import {Link, Redirect} from 'react-router-dom';
-
-var animationEnd = (function(el) {
-	var animations = {
-		"animation": "animationend",
-		"OAnimation": "oAnimationEnd",
-		"MozAnimation": "mozAnimationEnd",
-	   "WebkitAnimation": "webkitAnimationEnd"
-	}
-
-	for(var t in animations) {
-		if(el.style[t] !== undefined) {
-			return animations[t];
-		}
-	}
-})(document.createElement("fakeelement"));
+import { Divider } from 'semantic-ui-react';
+import { withRouter } from 'react-router'
 
 const roomCode = Math.random().toString(36).substr(2, 5);
+
 class BoxHome extends Component {
 	constructor(props) {
 		super(props)
-		console.log(props);
 		this.state = {
 			title: 'Sign Me In',
 			roomCodeEmpty: false,
 			roomCodeInvalid: false,
 			roomCodeInput: '',
 			roomCode: roomCode,
-			redirect: false,
 		}
 	}
+
 
 	handleRoomCodeInput = (e) => {
 		this.setState({
@@ -40,19 +25,20 @@ class BoxHome extends Component {
 		})
 	}
 	handleCreateRoom = () => {
-		
-		createRoom(`${roomCode}`)
+
+			createRoom(`${Math.random().toString(36).substr(2, 5)}`)
 			.then((data) => {
 				if (data.success) {
 					//this.props.toggleBoxHome(false, data.room, 'BoxRoom');
 					//this.props.match.history.push(`/room/${data.room}`);
 					this.setState({
 						roomCode: data.room,
-						redirect: true,
+						//redirectToBoxRoomrect: true,
 					})
+					this.props.history.push('/room/' +data.room)
 				} else {
 					this.setState({
-						title: data,
+						title: 'Error processing request...',
 						roomCode: 'ERROR'
 					})
 				}
@@ -84,7 +70,7 @@ class BoxHome extends Component {
 		doesRoomExist(this.state.roomCodeInput)
 			.then((data) => {
 				if (data.exists === true) {
-					this.props.showBoxJoinRoom(this.state.roomCodeInput);
+					this.props.history.push('join/room/' + data.room)
 				} else {
 					this.setState({
 						roomCodeInvalid: true,
@@ -96,11 +82,8 @@ class BoxHome extends Component {
 	render() {
 		return (
 			<div className="box">
-				{this.state.redirect && 
-					<Redirect push to={`/room/${roomCode}`} />
-				}
 						<div className='header'>
-							<Header size='medium'>{this.state.title}</Header>
+							<h2>{this.state.title}</h2>
 							<hr/>
 						</div>
 						<div className="content">
@@ -127,4 +110,4 @@ class BoxHome extends Component {
 	}
 }
 
-export default BoxHome;
+export default withRouter(BoxHome);

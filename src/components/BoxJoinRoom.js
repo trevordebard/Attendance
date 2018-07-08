@@ -18,7 +18,7 @@ export default class BoxJoinRoom extends Component {
     const socket = io(socketURL);
     socket.on('connect', () => {
       console.log('connected');
-      this.state.socket.emit('join-room', this.props.roomCode)
+      this.state.socket.emit('join-room', this.props.match.params.roomCode)
     })
     this.setState({
       socket
@@ -27,8 +27,7 @@ export default class BoxJoinRoom extends Component {
 
   enterName = (e) => {
     if(e.keyCode === 13) {
-      console.log(this.props)
-      this.state.socket.emit('new-user', this.props.match.match.params.roomCode, e.target.value, (success) => {
+      this.state.socket.emit('new-user', this.props.match.params.roomCode, e.target.value, (success) => {
         if(success) {
           this.setState({
             nameSubmitted: true,

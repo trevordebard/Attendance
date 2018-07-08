@@ -1,10 +1,11 @@
 
 
 /*@import url('https://fonts.googleapis.com/css?family=Archivo+Narrow|Merriweather:300');*/
-@import url('https://fonts.googleapis.com/css?family=Montserrat|Fira+Sans');
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Open+Sans');
+
 :root {
-  --title-font-family: 'Fira+Sans' !important;
-  --body-font-family: 'Montserrat' !important;
+  --title-font-family: 'Montserrat' !important;
+  --body-font-family: 'Open+Sans' !important;
 }
 #root{
   width: 100%;
@@ -31,6 +32,10 @@
   font-size: 1.4em;
 }
 
+hr {
+  margin-bottom: 1.4rem;
+}
+
 body {
   background-color: #8e44ad !important;/* fallback for old browsers */
   background: -webkit-linear-gradient(right,#8e44ad,#9b59b6) !important;
@@ -39,6 +44,7 @@ body {
   -webkit-font-smoothing: antialiased !important;
   -moz-osx-font-smoothing: grayscale !important;  
 }
+
 /*-----CONTENT POSITIONING-----*/
 .switch-wrapper {
   position: relative;
@@ -46,8 +52,6 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  justify-self: end;
-  transform: translateY(-50px)
 }
  
 .switch-wrapper > div {
@@ -57,28 +61,37 @@ body {
 
 /*-------------BOX STYLING----------------*/
 .box {
+  transform: translateY(-60px);
   background: white;
   padding: 30px 45px 45px 45px;
   text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
   width: 380px;
-  height: 340px;
+  height: fit-content;
   display: flex;
   align-items: center;
   flex-direction: column;
 }
-.header {
+h1, h2, h3, h4, h5, h6 {
   font-family: var(--title-font-family) !important;
+}
+.header {
   width: 100%;
+  margin-bottom: 0 !important;
 }
 .header .header-content {
   display: inline;
+  font-size: 1.6em;
+}
+.header-room-code {
+  font-size: 1.8em;
+  font-weight: bold;
 }
 
 .content {
   display: flex;
   align-items: stretch;
-  justify-content: center;
+  justify-content: space-evenly;
   flex-direction: column;
   height: 100%;
 }
@@ -116,6 +129,10 @@ body {
   font-family: var(--body-font-family);
   font-size: 13px;
   text-align: left;
+}
+
+#room-code-input {
+  width: 80%;
 }
 
 #enter-room-btn {
