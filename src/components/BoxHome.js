@@ -18,7 +18,6 @@ class BoxHome extends Component {
 		}
 	}
 
-
 	handleRoomCodeInput = (e) => {
 		this.setState({
 			roomCodeInput: e.target.value
@@ -82,30 +81,29 @@ class BoxHome extends Component {
 	render() {
 		return (
 			<div className="box">
-						<div className='header'>
-							<h2>{this.state.title}</h2>
-							<hr/>
-						</div>
-						<div className="content">
-							<button id="create-room" onClick={this.handleCreateRoom}>
-								Generate room
-							</button>
-						<Divider id='or' horizontal>or</Divider>
-
-						<span>
-							<input onKeyDown={this.enterRoomCode} onChange={this.handleRoomCodeInput} type="text" id="room-code-input" placeholder="Enter room code" />
-							<i id="enter-room-btn" onClick={this.joinRoom} className="fa fa-angle-right" />
-						</span>
-
-						{this.state.roomCodeEmpty && 
-							<p id="room-code-empty" className="box-validation">You must enter a room code.</p>
-						}
-						{this.state.roomCodeInvalid && 
-							<p id="room-code-invalid" className="box-validation">Sorry, that room does not exist.</p>
-						}
-					</div>
+				<div className='header'>
+					<h2>{this.state.title}</h2>
+					<hr/>
 				</div>
+				<div className="content">
+					<button id="create-room" onClick={this.handleCreateRoom}>
+						Generate room
+					</button>
+					<Divider id='or' horizontal>or</Divider>
 
+					<span>
+						<input onKeyDown={this.enterRoomCode} onChange={this.handleRoomCodeInput} type="text" id="room-code-input" placeholder="Enter room code" />
+						<i id="enter-room-btn" onClick={this.joinRoom} className="fa fa-angle-right" />
+					</span>
+
+					{this.state.roomCodeEmpty && 
+						<p id="room-code-empty" className="box-validation">You must enter a room code.</p>
+					}
+					{this.state.roomCodeInvalid && 
+						<p id="room-code-invalid" className="box-validation">Sorry, that room does not exist.</p>
+					}
+				</div>
+			</div>
 			);
 	}
 }
