@@ -1,33 +1,32 @@
+import {api_url} from './consts';
+
 const fetch = require('node-fetch');
-console.log('api url is: ' + process.env.REACT_APP_API_URL);
-function createRoom(roomId) {
-  return fetch(`${process.env.REACT_APP_API_URL}/createRoom/${roomId}`)
+const url = api_url;
+
+export function createRoom(roomId) {
+  return fetch(`${url}/createRoom/${roomId}`)
     .then(res => res.json())
     .then(data => (data))
     .catch(error => ('There was a problem processing your request'));
 }
 
-function doesRoomExist(roomId) {
-  return fetch(`${process.env.REACT_APP_API_URL}/doesRoomExist/${roomId}`)
+export function doesRoomExist(roomId) {
+  return fetch(`${url}/doesRoomExist/${roomId}`)
     .then(res => res.json())
     .then(data => (data))
     .catch(error => ('There was a problem processing your request'));
 }
 
-function addUser(roomId, name) {
-  return fetch(`${process.env.REACT_APP_API_URL}/addUser/${roomId}/${name}`)
+export function addUser(roomId, name) {
+  return fetch(`${url}/addUser/${roomId}/${name}`)
     .then(res => res.json())
     .then(data => data)
     .catch(error => error);
 }
 
-function getUsers(roomId) {
-  return fetch(`${process.env.REACT_APP_API_URL}/getUsers/${roomId}`)
+export function getUsers(roomId) {
+  return fetch(`${url}/getUsers/${roomId}`)
     .then(res => res.json())
     .then(data => data)
     .catch(error => error);
 }
-
-module.exports = {
- createRoom, doesRoomExist, addUser, getUsers 
-};

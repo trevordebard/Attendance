@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 import { Grid } from 'semantic-ui-react';
-const socketURL = process.env.REACT_APP_SOCKET_URL;
+import {socket_url} from '../consts';
+
+const socketURL = socket_url;
 
 export default class BoxRoom extends Component {
   constructor(props) {

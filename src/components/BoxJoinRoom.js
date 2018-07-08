@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
-const socketURL = process.env.REACT_APP_SOCKET_URL;
+import {socket_url} from '../consts';
+
+const socketURL = socket_url;
+console.log('socket url is ' + socketURL);
 
 export default class BoxJoinRoom extends Component {
   constructor(props) {
