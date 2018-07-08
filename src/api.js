@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const url = process.env.REACT_APP_ORIGIN_URL + ':' + process.env.REACT_APP_PORT + '/api';
+const url = process.env.ORIGIN_URL + ':' + process.env.PORT + '/api';
 console.log('api url is: ' + url);
 function createRoom(roomId) {
   return fetch(`${url}/createRoom/${roomId}`)
