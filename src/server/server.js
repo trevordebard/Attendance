@@ -4,10 +4,10 @@ const express = require('express');
 const dotenv = require('dotenv');
   dotenv.config();
 const db = require('./db');
-  db.connect();
+db.connect();
+const PORT = process.env.PORT || 4006;
 const routes = require('./routes')(app);
 const dev = app.get('env') !== 'production';
-const PORT = process.env.SERVER_PORT || 4006;
 
 const server = app.listen(PORT, () => {
   console.log(`listening for requests on port ${PORT}`);
