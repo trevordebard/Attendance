@@ -31,14 +31,18 @@ export default class BoxJoinRoom extends Component {
 
   enterName = (e) => {
     if(e.keyCode === 13) {
-      this.state.socket.emit('new-user', this.props.match.params.roomCode, e.target.value, (success) => {
-        if(success) {
-          this.setState({
-            nameSubmitted: true,
-          })
-       }
-      });
+      this.joinRoom();
     }
+  }
+
+  joinRoom = () => {
+    this.state.socket.emit('new-user', this.props.match.params.roomCode, document.getElementById('enter-name-input').value, (success) => {
+      if(success) {
+        this.setState({
+          nameSubmitted: true,
+        })
+     }
+    });
   }
 
   render() {
@@ -49,7 +53,7 @@ export default class BoxJoinRoom extends Component {
         {!nameSubmitted &&
             <div>
               <input id="enter-name-input" type="text" placeholder="Enter your name" onKeyDown={this.enterName} />
-              <button id="enter-name-btn">
+              <button id="enter-name-btn" onClick={this.joinRoom}>
                 Submit
               </button>
             </div>
