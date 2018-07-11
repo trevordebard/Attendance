@@ -33,23 +33,24 @@ export default class BoxRoom extends Component {
     })
   }
 
+
   render() {
     return (
         <div className="box box-room">
         	<div className='header'>
-            <p className='header-content' >Your room code is:
+            <h2 className='header-content' >Your room code is:
               <span className='header-content header-room-code'> {this.props.match.params.roomCode}</span>
-            </p>
+            </h2>
           </div>
           <hr />
           <div>
-            <Grid celled columns={4}>
             {this.state.users == null || !this.state.users.length ? 'There are currently no users' : (
-              this.state.users.map((element, i) => {
-                return(<Grid.Column key={i} className='grid-cell'>{element.name}</Grid.Column>)
-              })
+            <div className='room-names-grid box-room'>
+              {this.state.users.map((element, i) => {
+                return(<p className='box-room-names-cell'>{element.name}</p>)
+              })}
+            </div>
             )}
-            </Grid>
           </div>
         </div>
     );

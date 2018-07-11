@@ -3,27 +3,27 @@
 /*@import url('https://fonts.googleapis.com/css?family=Archivo+Narrow|Merriweather:300');*/
 @import url('https://fonts.googleapis.com/css?family=Montserrat|Open+Sans');
 
+
+
+/* Portrait and Landscape */
+body {
+  background-color: #8e44ad !important;/* fallback for old browsers */
+  background: -webkit-linear-gradient(right,#8e44ad,#9b59b6) !important;
+  background: -o-linear-gradient(right,#8e44ad,#9b59b6) !important;
+  background: linear-gradient(to left, #8e44ad, #9b59b6) !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
 :root {
   --title-font-family: 'Montserrat' !important;
   --body-font-family: 'Open+Sans' !important;
 }
-#root{
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Portrait and Landscape */
-@media only screen 
-  and (min-device-width: 375px) 
-  and (max-device-width: 667px) 
-  and (-webkit-min-device-pixel-ratio: 2) {
-    .container {
-      width: 360px
-    }
-
+p {
+  font-family: var(--body-font-family);
 }
 
 .url-link {
@@ -36,42 +36,61 @@ hr {
   margin-bottom: 1.4rem;
 }
 
-body {
-  background-color: #8e44ad !important;/* fallback for old browsers */
-  background: -webkit-linear-gradient(right,#8e44ad,#9b59b6) !important;
-  background: -o-linear-gradient(right,#8e44ad,#9b59b6) !important;
-  background: linear-gradient(to left, #8e44ad, #9b59b6) !important;
-  -webkit-font-smoothing: antialiased !important;
-  -moz-osx-font-smoothing: grayscale !important;  
-}
 
-/*-----CONTENT POSITIONING-----*/
-.switch-wrapper {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-}
- 
-.switch-wrapper > div {
-  position: absolute;
-}
-/*-------------END CONTENT POSITIONING----------------*/
 
 /*-------------BOX STYLING----------------*/
 .box {
-  transform: translateY(-60px);
   background: white;
   padding: 30px 45px 45px 45px;
   text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
   width: 380px;
-  height: fit-content;
-  display: flex;
   align-items: center;
   flex-direction: column;
+  display: flex;
+  margin-top: 12vh;
+  max-height: 78vh;
+  max-width: 90vw;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
+
+/* -----------------BoxRoom-------------------------*/
+.box-room {
+  width: max-content;
+  max-width: 90vw;
+}
+.room-names-grid {
+  display: grid;
+  padding: 10px
+}
+/* Screens greater than 760px */
+@media screen and (min-width: 722px) {
+  .room-names-grid {
+    grid-template-columns: repeat(7, 1fr);
+  }
+}
+
+/* Tablets/Medium screens */
+@media screen and (min-width: 481px) and (max-width: 721px) {
+  .room-names-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+/* Smartphone */
+@media only screen and (max-width : 480px) {
+  .room-names-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.box-room-names-cell {
+  font-family: var(--body-font-family);
+  font-size: 1.5em;
+  word-wrap: break-word;
+}
+
+/* -----------------End BoxRoom-------------------------*/
+
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--title-font-family) !important;
 }
@@ -88,13 +107,6 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
 }
 
-.content {
-  display: flex;
-  align-items: stretch;
-  justify-content: space-evenly;
-  flex-direction: column;
-  height: 100%;
-}
 /* Generate Room Button */
 .box button {
   font-family: var(--body-font-family);
@@ -153,11 +165,6 @@ h1, h2, h3, h4, h5, h6 {
 /*----------END BOX STYLING--------------*/
 .hide {
   display: none;
-}
-
-
-.grid-cell {
-  padding: .7rem !important;
 }
 .divider {
   font-family: var(--body-font-family) !important;
