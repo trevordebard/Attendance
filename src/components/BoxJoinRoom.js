@@ -40,13 +40,39 @@ export default class BoxJoinRoom extends Component {
       if(success) {
         this.setState({
           nameSubmitted: true,
-        })
+        });
+
+
+        let roomsJoined = window.localStorage.getItem('roomsJoined');
+        let roomsArray = [];
+        if(roomsJoined) {
+          roomsArray = JSON.parse(roomsJoined);
+          roomsArray.push(this.props.match.params.roomCode);
+        }
+        else {
+          roomsArray = [`${this.props.match.params.roomCode}`];
+        }
+        window.localStorage.setItem('roomsJoined', JSON.stringify(roomsArray));
+        //window.localStorage.setItem('roomsJoined', this.props.match.params.roomCode);
      }
     });
   }
 
   render() {
-    const { emptyName, multipleSignInAttempts, nameSubmitted } = this.state;
+    let { emptyName, multipleSignInAttempts, nameSubmitted } = this.state;
+    
+    /**
+     * Check to see if the user has joined this room or not
+     */
+    let roomsJoined = window.localStorage.getItem('roomsJoined');
+    if(roomsJoined) {
+      let roomsArray = JSON.parse(roomsJoined);
+      if(roomsArray.includes(this.props.match.params.roomCode)) {
+          multipleSignInAttempts = true;
+          nameSubmitted = true;
+      }
+    }
+    
     return (
       <div className="container">
         <div id="enter-name-box" className="box">
@@ -58,26 +84,25 @@ export default class BoxJoinRoom extends Component {
               </button>
             </div>
         }
-          {emptyName
-            && (
-            <p id="enter-name-empty" className="box-validation">
-                You must enter a name.
-            </p>
-            )
-
-            }
-          { nameSubmitted
-            && (
-            <h3 id="success-message">
-                Your name was submitted!
-            </h3>
-            )
-          }
-          {multipleSignInAttempts
-            && (
-            <h3 id="fail-message">
-                You may only sign in once!
-            </h3>
+        {emptyName
+          && (
+          <p id="enter-name-empty" className="box-validation">
+              You must enter a name.
+          </p>
+          )
+        }
+        { multipleSignInAttempts ?
+            (
+              <h3 id="fail-message">
+                  You may only sign in once!
+              </h3>
+            ) : (
+              nameSubmitted &&
+               (
+                <h3 id="success-message">
+                    Your name was submitted!
+                </h3>
+              )
             )
         }
         </div>
