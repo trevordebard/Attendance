@@ -19,8 +19,8 @@ body {
 }
 
 :root {
-  --title-font-family: 'Montserrat' !important;
-  --body-font-family: 'Open+Sans' !important;
+  --title-font-family: 'Open+Sans' !important;
+  --body-font-family: 'Montserrat' !important;
 }
 p {
   font-family: var(--body-font-family);

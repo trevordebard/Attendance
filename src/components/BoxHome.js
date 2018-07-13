@@ -118,7 +118,7 @@ class BoxHome extends Component {
 	render() {
 		return (
 			<div className="box">
-			<img src={require('../images/SMI_logo.png')} style={{width: '260px', height: '65px'}} alt='Sign Me In'/>
+			<img src={require('../images/SMI_logo.png')} style={{width: '260px', height: '62px'}} alt='Sign Me In'/>
 				<div className='header'>
 					<hr/>
 				</div>
