@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
-import { Grid } from 'semantic-ui-react';
 import {socket_url} from '../consts';
 
 const socketURL = socket_url;

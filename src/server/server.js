@@ -5,7 +5,6 @@ const dotenv = require('dotenv');
   dotenv.config();
 const db = require('./db');
   db.connect();
-const routes = require('./routes')(app);
 const dev = app.get('env') !== 'production';
 const PORT = process.env.PORT || 4006;
 

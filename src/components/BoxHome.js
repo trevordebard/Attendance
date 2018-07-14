@@ -16,6 +16,7 @@ class BoxHome extends Component {
 			roomCodeInput: '',
 			roomCode: roomCode,
 			tooManyAttempts: false,
+			problemProcessing: false,
 		}
 	}
 
@@ -104,10 +105,16 @@ class BoxHome extends Component {
 		});
 		doesRoomExist(this.state.roomCodeInput)
 			.then((data) => {
-				console.log(data);
+				
 				if (data.exists === true) {
 					this.props.history.push('join/room/' + data.roomCode)
-				} else {
+				}
+				else if(data === 'There was a problem processing your request') {
+					this.setState({
+						problemProcessing: true,
+					})
+				}
+				else {
 					this.setState({
 						roomCodeInvalid: true,
 					})
@@ -118,7 +125,7 @@ class BoxHome extends Component {
 	render() {
 		return (
 			<div className="box">
-			<img src={require('../images/SMI_logo.png')} style={{width: '260px', height: '62px'}} alt='Sign Me In'/>
+			<img src={require('../images/SMI_logo.png')} style={{width: '180px', height: 'auto'}} alt='Sign Me In'/>
 				<div className='header'>
 					<hr/>
 				</div>
@@ -140,6 +147,9 @@ class BoxHome extends Component {
 					}
 					{this.state.roomCodeInvalid && 
 						<p id="room-code-invalid" className="box-validation">Sorry, that room does not exist.</p>
+					}
+					{this.state.problemProcessing && 
+						<p className="box-validation">Sorry, there was a problem processing your request.</p>
 					}
 				</div>
 			</div>
