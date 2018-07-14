@@ -1,4 +1,4 @@
-const dev = (process.NODE_ENV !== 'production');
+const dev = (process.env.NODE_ENV !== 'production');
 let api_url;
 if(dev) {
     api_url = 'https://smi-dev-api.herokuapp.com/api'
