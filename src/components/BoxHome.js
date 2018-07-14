@@ -19,8 +19,7 @@ class BoxHome extends Component {
 		}
 	}
 	handleGenerateRoom = () => {
-		const roomCode = Math.random().toString(36).substr(2, 5);
-		this.props.history.push('roomSettings/' + roomCode)
+		this.props.history.push('roomSettings')
 	}
 	handleRoomCodeInput = (e) => {
 		this.setState({

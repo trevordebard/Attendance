@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Fader from 'react-fader'
 
 const uuid = window.localStorage.getItem('uuid');
+const roomCode = Math.random().toString(36).substr(2, 5);
 if(!uuid) {
 	window.localStorage.setItem('uuid', createUUID())
 }
@@ -17,14 +18,15 @@ function createUUID() {
 	)
 }
 class App extends Component {
+	
 	render() {
 		return (
 			<BrowserRouter>
 			<Route render={({ location }) => (
 				<Fader>
 					<Switch key={location.key} location={location}>
-					<Route exact path='/roomSettings/:roomCode' render={(match) =>
-						<BoxRoomSettings key={match.location.pathname} {...match}/>
+					<Route exact path='/roomSettings' render={(match) =>
+						<BoxRoomSettings key={match.location.pathname} roomCode={roomCode} {...match}/>
 					}
 					/>
 					<Route exact path='/room/:roomCode' render={(match) =>
@@ -37,7 +39,7 @@ class App extends Component {
 						)}
 					/>
 					<Route exact path='/' render={(match)=> 
-						<BoxHome key={match.location.pathname} {...match} showBoxJoinRoom={this.showBoxJoinRoom} showBoxRoom={this.showBoxRoom}/>
+						<BoxHome key={match.location.pathname} {...match} toggleRoomSettings={this.toggleRoomSettings} showBoxJoinRoom={this.showBoxJoinRoom} showBoxRoom={this.showBoxRoom}/>
 					}/>
 					</Switch>
 				</Fader>

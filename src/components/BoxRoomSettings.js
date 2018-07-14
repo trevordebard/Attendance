@@ -11,14 +11,17 @@ export default class BoxRoomSettings extends Component {
 			tooManyAttempts: false,
             problemProcessing: false,
             permissionToModify: false,
+            phoneChecked: false,
+            emailChecked: false,
         }
     }
     componentDidMount() {
-        doesRoomExist(this.props.match.params.roomCode)
+        
+        doesRoomExist(this.props.roomCode)
             .then((data) => {
                 // If the room exists, check to see if the user created it
                 if(data.exists === true) {
-                    didCreateRoom(this.props.match.params.roomCode, window.localStorage.getItem('uuid'))
+                    didCreateRoom(this.props.roomCode, window.localStorage.getItem('uuid'))
                     .then((data) => {
                         if(data.didCreate) {
                             this.setState({
@@ -72,35 +75,45 @@ export default class BoxRoomSettings extends Component {
 			})
 		}
 		else {
-            creationTimestamps.push(currentTime);
             const uuid = window.localStorage.getItem('uuid');
-			window.localStorage.setItem('creationTimestamps', JSON.stringify(creationTimestamps))
-			createRoom(this.props.match.params.roomCode, uuid)
-			.then((data) => {
-				if (data.success) {
-                    let roomsCreated = window.localStorage.getItem('roomsCreated');
-                    let roomsCreatedArray;
-                    if(roomsCreated) {
-                        roomsCreatedArray = JSON.parse(roomsCreated);
-                        roomsCreatedArray.push(data.room);
+			createRoom(this.props.roomCode, uuid, this.state.phoneChecked, this.state.emailChecked)
+                .then((data) => {
+                    if (data.success) {
+                        creationTimestamps.push(currentTime);
+                        window.localStorage.setItem('creationTimestamps', JSON.stringify(creationTimestamps))
+                        let roomsCreated = window.localStorage.getItem('roomsCreated');
+                        let roomsCreatedArray;
+                        if(roomsCreated) {
+                            roomsCreatedArray = JSON.parse(roomsCreated);
+                            roomsCreatedArray.push(data.room);
+                        }
+                        else {
+                            roomsCreatedArray = [data.room];
+                        }
+                        window.localStorage.setItem('roomsCreated', JSON.stringify(roomsCreatedArray));
+                        this.setState({
+                            roomCode: data.room,
+                        })
+                        this.props.history.push('/room/' +data.room)
+                    } else {
+                        this.setState({
+                            title: 'Error processing request...',
+                            roomCode: 'ERROR'
+                        })
                     }
-                    else {
-                        roomsCreatedArray = [data.room];
-                    }
-                    window.localStorage.setItem('roomsCreated', JSON.stringify(roomsCreatedArray));
-					this.setState({
-						roomCode: data.room,
-						//redirectToBoxRoomrect: true,
-					})
-					this.props.history.push('/room/' +data.room)
-				} else {
-					this.setState({
-						title: 'Error processing request...',
-						roomCode: 'ERROR'
-					})
-				}
-			})
+                }
+            )
 		}
+    }
+    handlePhoneChange = () => {
+        this.setState({
+            phoneChecked: !this.state.phoneChecked,
+        })
+    }
+    handleEmailChange = () => {
+        this.setState({
+            emailChecked: !this.state.emailChecked,
+        })
     }
     
   render() {
@@ -118,10 +131,10 @@ export default class BoxRoomSettings extends Component {
                         <Checkbox disabled checked label='Name' />
                     </Form.Field>
                     <Form.Field>
-                        <Checkbox label='Phone Number' />
+                        <Checkbox onChange={this.handlePhoneChange} label='Phone Number' />
                     </Form.Field>
                     <Form.Field>
-                        <Checkbox label='Email' />
+                        <Checkbox onChange={this.handleEmailChange} label='Email' />
                     </Form.Field>
                 </Form>
                 <button onClick={this.handleCreateRoom} style={{marginTop: '20px'}}>Create Room</button>

@@ -3,8 +3,8 @@ import {api_url} from './consts';
 const fetch = require('node-fetch');
 const url = api_url;
 
-export function createRoom(roomId, uuid) {
-  return fetch(`${url}/createRoom/${roomId}/${uuid}`)
+export function createRoom(roomId, uuid, phone, email) {
+  return fetch(`${url}/createRoom/${roomId}/${uuid}/true/${phone}/${email}`)
     .then(res => res.json())
     .then(data => (data))
     .catch(error => ('There was a problem processing your request'));

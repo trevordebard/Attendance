@@ -32,7 +32,6 @@ export default class BoxRoom extends Component {
     })
   }
 
-
   render() {
     return (
         <div className="box box-room">
