@@ -5,7 +5,10 @@ import {CSVLink} from 'react-csv';
 
 const socketURL = socket_url;
 const headers = [
-  {label: 'Name', key: 'name'},
+  {label: 'First Name', key: 'firstname'},
+  {label: 'Last name', key: 'lastname'},
+  {label: 'Phone', key: 'phone'},
+  {label: 'Email', key: 'email'},
 ];
 
 export default class BoxRoom extends Component {
@@ -27,6 +30,7 @@ export default class BoxRoom extends Component {
       this.state.socket.emit('join-room', this.props.match.params.roomCode)
       this.state.socket.on('fill-page-with-users', (users) => {
         if(users) {
+          console.log(users)
           this.setState({
             users: users,
           })
@@ -36,9 +40,6 @@ export default class BoxRoom extends Component {
     this.setState({
       socket
     })
-  }
-  exportNames = () => {
-    console.log(this.state.users);
   }
 
   render() {
@@ -55,17 +56,19 @@ export default class BoxRoom extends Component {
             {this.state.users == null || !this.state.users.length ? 'There are currently no users' : (
               <div className='room-names-grid box-room'>
                 {this.state.users.map((element, i) => {
-                  return(<p className='box-room-names-cell'>{element.name}</p>)
+                  if(element.firstname !== null) {
+                    return(<p className='box-room-names-cell'>{element.firstname} {element.lastname !== 'empty' && element.lastname}</p>)
+                  }
                 })}
               </div>
             )}
             <br/>
             {users.length > 0 &&
-              <button style={{width: '50%'}}>
-                <CSVLink data={this.state.users} style={{color: 'white'}} filename={"SignMeIn.csv"}  target="_blank" headers={headers}>
-                    Download Names
-                </CSVLink>
-              </button>
+              <CSVLink data={this.state.users} style={{color: 'white'}} filename={"SignMeIn.csv"}  target="_blank" headers={headers}>
+                <button style={{width: '50%'}}>
+                  Export
+                </button>
+              </CSVLink>
             }
           </div>
         </div>
