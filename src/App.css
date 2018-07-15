@@ -19,7 +19,7 @@ body {
 }
 
 :root {
-  --title-font-family: 'Open+Sans' !important;
+  --title-font-family: 'Montserrat' !important;
   --body-font-family: 'Montserrat' !important;
 }
 p {
@@ -53,6 +53,9 @@ hr {
   max-width: 90vw;
   overflow-y: auto;
   overflow-x: hidden;
+}
+.content{
+  width: 100%;
 }
 
 /* -----------------BoxRoom-------------------------*/
@@ -172,6 +175,5 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: normal !important;
   font-size: 1.1rem !important;
 }
-
 
 
