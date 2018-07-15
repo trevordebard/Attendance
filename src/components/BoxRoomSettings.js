@@ -23,7 +23,6 @@ export default class BoxRoomSettings extends Component {
                     this.props.history.push('/');
                 }
 
-
                 // This code is currently unused, but will be useful whenever I add ability to edit room settings
                 /*
                 if(data.exists === true) {

@@ -30,7 +30,7 @@ class App extends Component {
 					}
 					/>
 					<Route exact path='/room/:roomCode' render={(match) =>
-						<BoxRoom key={match.location.pathname} {...match}/>
+						<BoxRoom key={match.location.pathname} {...match} />
 					}
 					/>
 					<Route exact path='/join/room/:roomCode'

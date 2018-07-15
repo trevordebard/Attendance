@@ -26,9 +26,11 @@ export default class BoxRoom extends Component {
       console.log('connected');
       this.state.socket.emit('join-room', this.props.match.params.roomCode)
       this.state.socket.on('fill-page-with-users', (users) => {
-        this.setState({
-          users: users,
-        })
+        if(users) {
+          this.setState({
+            users: users,
+          })
+        }
       })
     })
     this.setState({
@@ -40,6 +42,7 @@ export default class BoxRoom extends Component {
   }
 
   render() {
+    const { users } = this.state;
     return (
         <div className="box box-room">
         	<div className='header'>
@@ -57,11 +60,13 @@ export default class BoxRoom extends Component {
               </div>
             )}
             <br/>
-            <button style={{width: '50%'}}>
-              <CSVLink data={this.state.users} style={{color: 'white'}} filename={"SignMeIn.csv"}  target="_blank" headers={headers}>
-                  Download Names
-              </CSVLink>
-            </button>
+            {users.length > 0 &&
+              <button style={{width: '50%'}}>
+                <CSVLink data={this.state.users} style={{color: 'white'}} filename={"SignMeIn.csv"}  target="_blank" headers={headers}>
+                    Download Names
+                </CSVLink>
+              </button>
+            }
           </div>
         </div>
     );
