@@ -16,10 +16,16 @@ export default class BoxRoomSettings extends Component {
         }
     }
     componentDidMount() {
-        
         doesRoomExist(this.props.roomCode)
             .then((data) => {
                 // If the room exists, check to see if the user created it
+                if(data.exists) {
+                    this.props.history.push('/');
+                }
+
+
+                // This code is currently unused, but will be useful whenever I add ability to edit room settings
+                /*
                 if(data.exists === true) {
                     didCreateRoom(this.props.roomCode, window.localStorage.getItem('uuid'))
                     .then((data) => {
@@ -34,7 +40,7 @@ export default class BoxRoomSettings extends Component {
                             })
                         }
                     })
-                }
+                }*/
                 // If the room does not exist, allow user to modify settings and create it
                 else {
                     this.setState({
@@ -117,7 +123,7 @@ export default class BoxRoomSettings extends Component {
     }
     
   render() {
-      const { permissionToModify } = this.state;
+    const { permissionToModify } = this.state;
     return (
       <div className='box'>
         <h3>{this.state.title}</h3>
@@ -125,7 +131,7 @@ export default class BoxRoomSettings extends Component {
             <hr/>
         </div>
         { permissionToModify===true ? (
-            <div style={{textAlign: 'left', alignSelf: 'left'}}>
+            <div className='content' style={{textAlign: 'left', alignSelf: 'left'}}>
                 <Form>
                     <Form.Field>
                         <Checkbox disabled checked label='Name' />

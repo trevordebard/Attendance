@@ -54,6 +54,9 @@ hr {
   overflow-y: auto;
   overflow-x: hidden;
 }
+.content{
+  width: 100%;
+}
 
 /* -----------------BoxRoom-------------------------*/
 .box-room {
@@ -172,6 +175,5 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: normal !important;
   font-size: 1.1rem !important;
 }
-
 
 
