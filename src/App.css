@@ -1,9 +1,4 @@
-
-
-/*@import url('https://fonts.googleapis.com/css?family=Archivo+Narrow|Merriweather:300');*/
-@import url('https://fonts.googleapis.com/css?family=Montserrat|Open+Sans');
-
-
+@import url('./google-fonts.css');
 
 /* Portrait and Landscape */
 body {
@@ -108,7 +103,7 @@ hr {
 /* -----------------End BoxRoom-------------------------*/
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--title-font-family) !important;
+  font-family: var(--title-font-family), sans-serif !important;
 }
 .header {
   width: 100%;
@@ -125,7 +120,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Generate Room Button */
 .box button {
-  font-family: var(--body-font-family);
+  font-family: var(--body-font-family), sans-serif;
   text-transform: uppercase;
   background: #8D44AD;
   width: 100%;
@@ -141,11 +136,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #or {
-  font-family: var(--body-font-family);
+  font-family: var(--body-font-family), sans-serif;
 }
 /* Enter room code */
 .box input {
-  font-family: var(--body-font-family);
+  font-family: var(--body-font-family), sans-serif;
   background: #f2f2f2;
   border: 0;
   padding: 15px;
@@ -155,7 +150,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .box-validation {
   color: red;
-  font-family: var(--body-font-family);
+  font-family: var(--body-font-family), sans-serif;
   font-size: 13px;
   text-align: left;
 }
@@ -184,7 +179,7 @@ h1, h2, h3, h4, h5, h6 {
   display: none;
 }
 .divider {
-  font-family: var(--body-font-family) !important;
+  font-family: var(--body-font-family), sans-serif !important;
   text-transform: lowercase !important;
   font-weight: normal !important;
   font-size: 1.1rem !important;
