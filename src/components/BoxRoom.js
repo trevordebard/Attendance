@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 import {socket_url} from '../consts';
+import {CSVLink} from 'react-csv';
 
 const socketURL = socket_url;
+const headers = [
+  {label: 'First Name', key: 'firstname'},
+  {label: 'Last name', key: 'lastname'},
+  {label: 'Phone', key: 'phone'},
+  {label: 'Email', key: 'email'},
+];
 
 export default class BoxRoom extends Component {
   constructor(props) {
@@ -22,9 +29,12 @@ export default class BoxRoom extends Component {
       console.log('connected');
       this.state.socket.emit('join-room', this.props.match.params.roomCode)
       this.state.socket.on('fill-page-with-users', (users) => {
-        this.setState({
-          users: users,
-        })
+        if(users) {
+          console.log(users)
+          this.setState({
+            users: users,
+          })
+        }
       })
     })
     this.setState({
@@ -32,8 +42,8 @@ export default class BoxRoom extends Component {
     })
   }
 
-
   render() {
+    const { users } = this.state;
     return (
         <div className="box box-room">
         	<div className='header'>
@@ -42,14 +52,24 @@ export default class BoxRoom extends Component {
             </h2>
           </div>
           <hr />
-          <div>
+          <div className='content'>
             {this.state.users == null || !this.state.users.length ? 'There are currently no users' : (
-            <div className='room-names-grid box-room'>
-              {this.state.users.map((element, i) => {
-                return(<p className='box-room-names-cell'>{element.name}</p>)
-              })}
-            </div>
+              <div className='room-names-grid box-room'>
+                {this.state.users.map((element, i) => {
+                  if(element.firstname !== null) {
+                    return(<p className='box-room-names-cell'>{element.firstname} {element.lastname !== 'empty' && element.lastname}</p>)
+                  }
+                })}
+              </div>
             )}
+            <br/>
+            {users.length > 0 &&
+              <CSVLink data={this.state.users} style={{color: 'white'}} filename={"SignMeIn.csv"}  target="_blank" headers={headers}>
+                <button style={{width: '50%'}}>
+                  Export
+                </button>
+              </CSVLink>
+            }
           </div>
         </div>
     );
