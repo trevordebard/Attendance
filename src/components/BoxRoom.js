@@ -30,7 +30,6 @@ export default class BoxRoom extends Component {
       this.state.socket.emit('join-room', this.props.match.params.roomCode)
       this.state.socket.on('fill-page-with-users', (users) => {
         if(users) {
-          console.log(users)
           this.setState({
             users: users,
           })

@@ -1,3 +1,4 @@
+const compression = require('compression');
 const path = require('path');
 const express = require('express');
   const app = express();
@@ -11,7 +12,7 @@ const PORT = process.env.PORT || 4006;
 const server = app.listen(PORT, () => {
   console.log(`listening for requests on port ${PORT}`);
 });
-
+app.use(compression());
 if (!dev) {
   // Security to prevent people from seeing this is powered by express
   console.log('Production environment')
