@@ -1,0 +1,188 @@
+@import url('./google-fonts.css');
+
+/* Portrait and Landscape */
+body {
+  background-color: #8e44ad !important;/* fallback for old browsers */
+  background: -webkit-linear-gradient(right,#8e44ad,#9b59b6) !important;
+  background: -o-linear-gradient(right,#8e44ad,#9b59b6) !important;
+  background: linear-gradient(to left, #8e44ad, #9b59b6) !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+:root {
+  --title-font-family: 'Montserrat' !important;
+  --body-font-family: 'Montserrat' !important;
+}
+p {
+  font-family: var(--body-font-family);
+}
+
+.url-link {
+  font-style: normal;
+  text-decoration: underline;
+  font-size: 1.4em;
+}
+
+hr {
+  margin-bottom: 1.4rem;
+}
+
+
+
+/*-------------BOX STYLING----------------*/
+.box {
+  background: white;
+  padding: 30px 45px 45px 45px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  width: 380px;
+  align-items: center;
+  flex-direction: column;
+  display: flex;
+  margin-top: 12vh;
+  max-height: 78vh;
+  max-width: 90vw;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.content{
+  width: 100%;
+}
+
+/* -----------------BoxRoom-------------------------*/
+.box-room {
+  width: 100%;
+  text-align: center;
+}
+.room-names-grid {
+  display: grid;
+  padding: 10px;
+  grid-column-gap: 10px;
+}
+/* Screens greater than 760px */
+@media screen and (min-width: 722px) {
+  .room-names-grid {
+    grid-template-columns: repeat(7, 1fr);
+  }
+}
+
+/* Tablets/Medium screens */
+@media screen and (min-width: 630px) and (max-width: 721px) {
+  .room-names-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+/* Tablets/Medium screens */
+@media screen and (min-width: 524px) and (max-width: 630px) {
+  .room-names-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+/* Smartphone */
+@media only screen and (min-width : 421px) and (max-width : 523px) {
+  .room-names-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+/* Smartphone */
+@media only screen and (max-width : 420px) {
+  .room-names-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.box-room-names-cell {
+  font-family: var(--body-font-family);
+  font-size: 1.5em;
+  word-wrap: break-word;
+}
+
+/* -----------------End BoxRoom-------------------------*/
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--title-font-family), sans-serif !important;
+}
+.header {
+  width: 100%;
+  margin-bottom: 0 !important;
+}
+.header .header-content {
+  display: inline;
+  font-size: 1.6em;
+}
+.header-room-code {
+  font-size: 1.8em;
+  font-weight: bold;
+}
+
+/* Generate Room Button */
+.box button {
+  font-family: var(--body-font-family), sans-serif;
+  text-transform: uppercase;
+  background: #8D44AD;
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.box button:hover,.box button:active,.box button:focus {
+  background: #AB69C8;
+}
+
+#or {
+  font-family: var(--body-font-family), sans-serif;
+}
+/* Enter room code */
+.box input {
+  font-family: var(--body-font-family), sans-serif;
+  background: #f2f2f2;
+  border: 0;
+  padding: 15px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.box-validation {
+  color: red;
+  font-family: var(--body-font-family), sans-serif;
+  font-size: 13px;
+  text-align: left;
+}
+
+#room-code-input {
+  width: 80%;
+}
+
+#enter-room-btn {
+  width: 20%;
+  font-size: 2.5rem;
+  vertical-align: middle;
+  color: #8D44AD;
+}
+#enter-room-btn:hover {
+  color: #AB69C8;
+  cursor: pointer;
+}
+#enter-name-btn {
+  margin-top: 15px;
+}
+
+
+/*----------END BOX STYLING--------------*/
+.hide {
+  display: none;
+}
+.divider {
+  font-family: var(--body-font-family), sans-serif !important;
+  text-transform: lowercase !important;
+  font-weight: normal !important;
+  font-size: 1.1rem !important;
+}
+
+

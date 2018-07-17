@@ -1,3 +1,6 @@
 node_modules
-.env
 build
+.env
+package-lock.json
+.eslintrc.js
+.env

@@ -1,183 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <title>Attendance App</title>
-</head>
-<body>
-    <div class="container">
-        <div id="box-home" class="box animated">
-            <h3>Sign Me In</h3>
-            <hr>
-            <div class="content">
-                <button id="create-room">Generate room</button>
-                <p id="or">- or -</p>
-                <span><input type="text" id="room-code-input" placeholder="Enter room code"/><i id="enter-room-btn" class="fas fa-angle-right"></i></span>
-                <p id="room-code-empty" class="box-validation hide">You must enter a room code.</p>
-                <p id="room-code-invalid" class="box-validation hide">Sorry, that room does not exist.</p>
-            </div>
-        </div>
-        <div id="enter-name-box" class="box hide">
-            <input id="enter-name-input" type="text" placeholder="Enter your name">
-            <p id="enter-name-empty" class="box-validation hide">You must enter a room code.</p>
-            <button id="enter-name-btn">Submit</button></i>
-            <h3 id="success-message" class="hide">Your name was submitted!</h3>
-            <h3 id="fail-message" class="hide">You may only sign in once!</h3>
-        </div>
-        <div id="room-view" class="box animated fadeInLeft hide">
-            <h3>Your room code is: <span id='room-code-view' class='url-link'></span></h3>
-            <hr>
-            <div id="users-list">
-                
-            </div>
-        </div>
-    </div>
-</body>
-<script>
-    //url = 'localhost:4000'
-    url = 'https://attendance-app-12.herokuapp.com/'
-    const socket = io.connect(`${url}`);
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <!--
+      manifest.json provides metadata used when your web app is added to the
+      homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+    <!--<link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
 
-    const createRoom = document.getElementById('create-room');
-    const boxHome = document.getElementById('box-home');
-    const roomView = document.querySelector('#room-view');
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>Sign Me In</title>
+  </head>
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
 
-    //Generate random room number and emit that to the socket
-    createRoom.addEventListener('click', () => {
-        boxHome.classList.add('animated');
-        boxHome.classList.add('fadeOutLeft');
-        roomView.classList.toggle('hide');
-        roomView.classList.add('animated');
-        roomView.classList.add('fadeInRight');
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
 
-        let id = Math.random().toString(36).substr(2, 5);
-        document.getElementById('room-code-view').innerHTML += id;
-        //document.getElementById('code-header').innerHTML += z + '<h3 class="sub-heading">at <span class="url-link">signmein.org</span> to join</h3></h3>';
-        
-        socket.emit('create-room', {
-            roomId: id
-        });
-    });
-
-    const enterRoomInput = document.getElementById('room-code-input');
-    const roomCodeEmpty = document.getElementById('room-code-empty');
-    const roomCodeInvalid = document.getElementById('room-code-invalid');
-
-    enterRoomInput.addEventListener('keyup', (e)=> {
-        e.preventDefault();
-       
-        if(e.keyCode == 13) {
-            if(enterRoomInput.value == "") {
-                roomCodeEmpty.classList.remove('hide');
-                roomCodeInvalid.classList.add('hide');
-                shakeElement(boxHome);
-            }
-            else {
-                boxHome.classList.add('animated');
-                socket.emit('does-room-exist', enterRoomInput.value);
-            }
-        }
-    });
-    const enterRoomBtn = document.getElementById('enter-room-btn');
-    enterRoomBtn.addEventListener('click', (e) => {
-        if(enterRoomInput.value == "") {
-                roomCodeEmpty.classList.remove('hide');
-                roomCodeInvalid.classList.add('hide');
-                shakeElement(boxHome);
-            }
-            else {
-                socket.emit('does-room-exist', enterRoomInput.value);
-            }
-    });
-
-    const enterNameBox = document.getElementById('enter-name-box');
-    socket.on('room-exists', () => {
-        $(boxHome).addClass('animated fadeOutLeft').one('webkitAnimationEnd` mozAnimationEnd MSAnimationEnd oanimationend animationend', () => {
-            $(boxHome).removeClass('animated fadeOutLeft');
-            boxHome.classList.add('hide');
-        });
-        
-        //enterNameBox.classList.add('animated');
-        enterNameBox.classList.toggle('hide');
-        //enterNameBox.classList.add('fadeInRight');
-        $(enterNameBox).addClass('animated fadeInRight').one('webkitAnimationEnd` mozAnimationEnd MSAnimationEnd oanimationend animationend', () => {
-            $(enterNameBox).removeClass('animated fadeInRight');
-        });
-
-        socket.emit('join-room', enterRoomInput.value);
-    });
-    
-    socket.on('room-does-not-exist', () => {
-        shakeElement(boxHome);
-        roomCodeInvalid.classList.remove('hide');
-        roomCodeEmpty.classList.add('hide');
-    });
-
-    socket.on('alert', ()=>{
-        console.log('ALERT');
-    });
-
-    socket.on('fill-page-with-users', (data) => {
-        html = '';
-        for (let user of data) {
-            html += `<p>${user.name}</p>`;
-        }
-        document.getElementById('users-list').innerHTML = html;
-    });
-
-    socket.on('successfull-sign-in', () => {
-        enterNameEmpty.classList.add('hide');
-        document.getElementById('success-message').classList.toggle('hide');
-    })
-    
-    socket.on('already-signed-in', () => {
-        enterNameEmpty.classList.add('hide');
-        document.getElementById('fail-message').classList.toggle('hide');
-    });
-
-    const enterNameInput = document.getElementById('enter-name-input');
-    const enterNameBtn = document.getElementById('enter-name-btn');
-    const enterNameEmpty = document.getElementById('enter-name-empty');
-    
-    enterNameInput.addEventListener('keyup', (e)=> {
-        e.preventDefault();
-        if(e.keyCode == 13) {
-            if(enterNameInput.value == "") {
-                enterNameEmpty.classList.remove('hide');
-                console.log(enterNameBox);
-                shakeElement(enterNameBox);
-            }
-            else {
-                socket.emit('new-user', {
-                    room: enterRoomInput.value,
-                    name: enterNameInput.value
-                });
-                enterNameInput.classList.toggle('hide');
-                enterNameBtn.classList.toggle('hide');
-            }
-        }
-    });
-    enterNameBtn.addEventListener('click', (e)=> { 
-        socket.emit('new-user', {
-            room: enterRoomInput.value,
-            name: enterNameInput.value
-        });
-        enterNameInput.classList.toggle('hide');
-        enterNameBtn.classList.toggle('hide');
-    });
-
-    const shakeElement = (element) => {
-        $(element).addClass('animated shake').one('webkitAnimationEnd` mozAnimationEnd MSAnimationEnd oanimationend animationend', () => {
-            $(element).removeClass('animated shake');
-        });
-    }
-    
-</script>
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  </body>
 </html>
