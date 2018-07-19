@@ -81,7 +81,16 @@ export default class BoxRoomSettings extends Component {
 		}
 		else {
             const uuid = window.localStorage.getItem('uuid');
-			createRoom(this.props.roomCode, uuid, this.state.phoneChecked, this.state.emailChecked)
+            const form = document.getElementById('params-form');
+            const reqs = ['name'];
+            if(this.state.phoneChecked) {
+                reqs.push('phone')
+            }
+            if(this.state.emailChecked) {
+                reqs.push('email')
+            }
+            console.log(reqs);
+			createRoom(this.props.roomCode, uuid, reqs)
                 .then((data) => {
                     if (data.success) {
                         creationTimestamps.push(currentTime);
@@ -131,15 +140,15 @@ export default class BoxRoomSettings extends Component {
         </div>
         { permissionToModify===true ? (
             <div className='content' style={{textAlign: 'left', alignSelf: 'left'}}>
-                <Form>
+                <Form id='params-form'>
                     <Form.Field>
-                        <Checkbox disabled checked label='Name' />
+                        <Checkbox disabled checked name='name' label='Name' />
                     </Form.Field>
                     <Form.Field>
-                        <Checkbox onChange={this.handlePhoneChange} label='Phone Number' />
+                        <Checkbox onChange={this.handlePhoneChange} name='phone' label='Phone Number' />
                     </Form.Field>
                     <Form.Field>
-                        <Checkbox onChange={this.handleEmailChange} label='Email' />
+                        <Checkbox onChange={this.handleEmailChange} name='email' label='Email' />
                     </Form.Field>
                 </Form>
                 <button onClick={this.handleCreateRoom} style={{marginTop: '20px'}}>Create Room</button>

@@ -12,6 +12,7 @@ module.exports = (socket) => {
         getUsers(roomId)
             .then((data) => {
                 if(data.success) {
+                    console.log(data);
                     io.sockets.to(`${roomId}`).emit('fill-page-with-users', data.result);
                 }
                 else {
@@ -20,8 +21,8 @@ module.exports = (socket) => {
             });
     });
 
-    socket.on('new-user', (roomCode, name, phone, email, cb) => {
-        addUser(roomCode, name, phone, email)
+    socket.on('new-user', (roomCode, reqArray, cb) => {
+        addUser(roomCode, reqArray)
             .then((data) => {
                 if(data.success === true) {
                     getUsers(roomCode)

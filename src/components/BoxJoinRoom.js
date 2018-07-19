@@ -14,7 +14,8 @@ export default class BoxJoinRoom extends Component {
       emptyName: null,
       multipleSignInAttempts: null,
       nameSubmitted: false,
-      socket: null
+      socket: null,
+      reqs: [],
     }
   }
   componentWillMount() {
@@ -34,14 +35,9 @@ export default class BoxJoinRoom extends Component {
     getRequiredParams(this.props.match.params.roomCode)
       .then((data) => {
         if(data.success === true) {
-          reqname = data.result.reqname;
-          reqemail = data.result.reqemail;
-          reqphone = data.result.reqphone;
           this.setState({
-            reqname: reqname,
-            reqemail: reqemail,
-            reqphone: reqphone,
-          });
+            reqs: JSON.parse(data.result.reqs),
+          })
         }
       })
   }
@@ -76,17 +72,14 @@ export default class BoxJoinRoom extends Component {
   }
 
   joinRoom = () => {
-    let name = document.getElementById('enter-name-input').value;
-    let phone = null;
-    let email = null;
-    if(this.state.reqphone) {
-      phone = document.getElementById('phone').value
-    }
-    if(this.state.reqemail) {
-      email = document.getElementById('email').value
-    }
-
-    this.state.socket.emit('new-user', this.props.match.params.roomCode, name, phone, email, (data) => {
+    const reqs = document.getElementById('reqs');
+    console.log(reqs.childNodes);
+    let reqArray = []
+    reqs.childNodes.forEach((element) => {
+      reqArray.push({[element.id]: element.value})
+    })
+    
+    this.state.socket.emit('new-user', this.props.match.params.roomCode, reqArray, (data) => {
       if(data.success) {
         this.setState({
           nameSubmitted: true,
@@ -110,7 +103,7 @@ export default class BoxJoinRoom extends Component {
   }
 
   render() {
-    let { emptyName, multipleSignInAttempts, nameSubmitted } = this.state;
+    let { emptyName, multipleSignInAttempts, nameSubmitted, reqs } = this.state;
     const { reqname, reqphone, reqemail } = this.state;
     // Check to see if the user has joined this room or not
     let roomsJoined = window.localStorage.getItem('roomsJoined');
@@ -127,9 +120,13 @@ export default class BoxJoinRoom extends Component {
         <div id="enter-name-box" className="box">
         {!nameSubmitted &&
             <div>
-              {reqname && <input id="enter-name-input" type="text" placeholder="Enter your name" onKeyDown={this.enterName} /> }
-              {reqphone && <input id="phone" type="phone" placeholder="Enter your phone number" onKeyDown={this.enterPhone}/> }
-              {reqemail && <input id="email" type="text" placeholder="Enter your email" onKeyDown={this.enterEmail}/> }
+                <form id="reqs">
+                {
+                  reqs.map(element =>
+                    <input id={element} name={element} type="text" placeholder={`Enter ${element}`}/>
+                  )
+                }
+                </form>
               <button id="enter-name-btn" onClick={this.joinRoom}>
                 Submit
               </button>

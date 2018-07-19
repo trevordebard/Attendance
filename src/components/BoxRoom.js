@@ -30,6 +30,10 @@ export default class BoxRoom extends Component {
       this.state.socket.emit('join-room', this.props.match.params.roomCode)
       this.state.socket.on('fill-page-with-users', (users) => {
         if(users) {
+          users.map((element) => {
+            element.reqs = JSON.parse(element.reqs);
+          })
+          console.log(users)
           this.setState({
             users: users,
           })
@@ -55,8 +59,11 @@ export default class BoxRoom extends Component {
             {this.state.users == null || !this.state.users.length ? 'There are currently no users' : (
               <div className='room-names-grid box-room'>
                 {this.state.users.map((element, i) => {
-                  if(element.firstname !== null) {
-                    return(<p className='box-room-names-cell'>{element.firstname} {element.lastname !== 'empty' && element.lastname}</p>)
+                  for(let val of element.reqs) {
+                    if(val.name !== null) {
+                      console.log('inside')
+                      return(<p className='box-room-names-cell'>{val.name} {element.lastname !== 'empty' && element.lastname}</p>)
+                    }
                   }
                 })}
               </div>

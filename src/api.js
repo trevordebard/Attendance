@@ -1,8 +1,8 @@
 var consts = require('./consts');
 const fetch = require('node-fetch');
 const url = consts.api_url;
-function createRoom(roomId, uuid, phone, email) {
-  return fetch(`${url}/createRoom/${roomId}/${uuid}/true/${phone}/${email}`)
+function createRoom(roomId, uuid, reqs) {
+  return fetch(`${url}/createRoom/${roomId}/${uuid}?params=${JSON.stringify(reqs)}`)
     .then(res => res.json())
     .then(data => (data))
     .catch(error => ('There was a problem processing your request'));
@@ -23,9 +23,11 @@ function doesRoomExist(roomId) {
     .catch(error => ('There was a problem processing your request'));
 }
 
-function addUser(roomId, name, phone, email) {
+function addUser(roomId, reqArray) {
   console.log('add user')
-  return fetch(`${url}/addUser?roomId=${roomId}&name=${name}&phone=${phone}&email=${email}`)
+  console.log(reqArray)
+  
+  return fetch(`${url}/addUser?roomId=${roomId}&reqs=${JSON.stringify(reqArray)}`)
     .then(res => res.json())
     .then(data => data)
     .catch(error => error);
