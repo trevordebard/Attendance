@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
-import { Checkbox, Form } from 'semantic-ui-react'
+import { Checkbox, Form, Icon, Label, Input } from 'semantic-ui-react'
 import { createRoom, doesRoomExist, didCreateRoom } from '../api';
 
+const styles = {
+    reqsInput: {
+        width: '80%',
+        borderTop: 'none',
+        borderLeft: 'none',
+        borderRadius: '0',
+        borderRight: 'none'
+    },
+}
 
 export default class BoxRoomSettings extends Component {
     constructor(props) {
@@ -13,6 +22,7 @@ export default class BoxRoomSettings extends Component {
             permissionToModify: false,
             phoneChecked: false,
             emailChecked: false,
+            numFormFields: 1,
         }
     }
     componentDidMount() {
@@ -54,10 +64,10 @@ export default class BoxRoomSettings extends Component {
 		let creationTimestamps = JSON.parse(roomsCreatedInLastHour);
 		let count = 0;
 		let currentTime = new Date().getTime();
-
+        // Check if user has created any rooms
 		if(roomsCreatedInLastHour) {
 			let del = [];
-			// Iterate through array of time
+			// Iterate through array of time and update creation count
 			for(let i=0; i < creationTimestamps.length; i++){
 				if(creationTimestamps[i] > currentTime - 3600000) { //if the timestamp occurred within the last hour
 					count++;
@@ -81,14 +91,16 @@ export default class BoxRoomSettings extends Component {
 		}
 		else {
             const uuid = window.localStorage.getItem('uuid');
-            const form = document.getElementById('params-form');
+            const form = document.getElementById('reqs-form');
             const reqs = ['name'];
-            if(this.state.phoneChecked) {
-                reqs.push('phone')
+            for(let element of form) {
+                if(element.type == 'text') {
+                    reqs.push(element.value);
+                }
             }
-            if(this.state.emailChecked) {
-                reqs.push('email')
-            }
+            // Iterate throught input fields to get reqs
+            // If if field text is empty, ignore it
+            // Otherwise add it to the array 
             console.log(reqs);
 			createRoom(this.props.roomCode, uuid, reqs)
                 .then((data) => {
@@ -129,6 +141,23 @@ export default class BoxRoomSettings extends Component {
             emailChecked: !this.state.emailChecked,
         })
     }
+    addRequirement = () => {
+        this.setState({
+            numFormFields: this.state.numFormFields+1,
+        })
+    }
+    getFormFields = () => {
+        let array = []
+        for(let i = 0; i < this.state.numFormFields; i++) {
+            array.push(
+                <Form.Field className='reqs-input-field'>
+                    <Checkbox tabIndex='-1' defaultChecked/>
+                    <input placeholder='Enter field' type='text' className='reqs-input' style={styles.reqsInput} autoFocus/>
+                </Form.Field>
+            )
+        }
+        return array;
+    }
     
   render() {
     const { permissionToModify } = this.state;
@@ -140,15 +169,13 @@ export default class BoxRoomSettings extends Component {
         </div>
         { permissionToModify===true ? (
             <div className='content' style={{textAlign: 'left', alignSelf: 'left'}}>
-                <Form id='params-form'>
+                <Form id='reqs-form'>
                     <Form.Field>
                         <Checkbox disabled checked name='name' label='Name' />
                     </Form.Field>
+                    {this.getFormFields()}
                     <Form.Field>
-                        <Checkbox onChange={this.handlePhoneChange} name='phone' label='Phone Number' />
-                    </Form.Field>
-                    <Form.Field>
-                        <Checkbox onChange={this.handleEmailChange} name='email' label='Email' />
+                        <Icon name="plus" onClick={this.addRequirement}/>
                     </Form.Field>
                 </Form>
                 <button onClick={this.handleCreateRoom} style={{marginTop: '20px'}}>Create Room</button>

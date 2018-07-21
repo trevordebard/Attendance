@@ -61,7 +61,6 @@ export default class BoxRoom extends Component {
                 {this.state.users.map((element, i) => {
                   for(let val of element.reqs) {
                     if(val.name !== null) {
-                      console.log('inside')
                       return(<p className='box-room-names-cell'>{val.name} {element.lastname !== 'empty' && element.lastname}</p>)
                     }
                   }

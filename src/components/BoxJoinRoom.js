@@ -7,6 +7,13 @@ const socketURL = socket_url;
 let reqname, reqemail, reqphone;
 reqname = reqemail = reqphone = true;
 
+const styles = {
+  inputFields: {
+    marginBottom: '15px',
+    width: '90%'
+  }
+}
+
 export default class BoxJoinRoom extends Component {
   constructor(props) {
     super(props);
@@ -123,7 +130,7 @@ export default class BoxJoinRoom extends Component {
                 <form id="reqs">
                 {
                   reqs.map(element =>
-                    <input id={element} name={element} type="text" placeholder={`Enter ${element}`}/>
+                    <input id={element} style={styles.inputFields} name={element} type="text" placeholder={`Enter ${element}`}/>
                   )
                 }
                 </form>
