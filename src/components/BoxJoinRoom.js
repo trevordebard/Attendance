@@ -4,8 +4,6 @@ import {socket_url} from '../consts';
 import { getRequiredParams } from '../api';
 
 const socketURL = socket_url;
-let reqname, reqemail, reqphone;
-reqname = reqemail = reqphone = true;
 
 const styles = {
   inputFields: {
@@ -111,7 +109,6 @@ export default class BoxJoinRoom extends Component {
 
   render() {
     let { emptyName, multipleSignInAttempts, nameSubmitted, reqs } = this.state;
-    const { reqname, reqphone, reqemail } = this.state;
     // Check to see if the user has joined this room or not
     let roomsJoined = window.localStorage.getItem('roomsJoined');
     if(roomsJoined) {
@@ -129,8 +126,12 @@ export default class BoxJoinRoom extends Component {
             <div>
                 <form id="reqs">
                 {
-                  reqs.map(element =>
-                    <input id={element} style={styles.inputFields} name={element} type="text" placeholder={`Enter ${element}`}/>
+                  reqs.map((element, i) => {
+                    if(i === 0) {
+                      return (<input id={element} style={styles.inputFields} name={element} type="text" placeholder={`Enter First and Last Name`}/>)
+                    }
+                    return(<input id={element} style={styles.inputFields} name={element} type="text" placeholder={`Enter ${element}`}/>)
+                  }
                   )
                 }
                 </form>

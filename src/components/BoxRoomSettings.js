@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
-import { Checkbox, Form, Icon, Label, Input } from 'semantic-ui-react'
-import { createRoom, doesRoomExist, didCreateRoom } from '../api';
+import { Checkbox, Form, Icon } from 'semantic-ui-react'
+import { createRoom, doesRoomExist } from '../api';
 
 const styles = {
     reqsInput: {
-        width: '80%',
+        width: '70%',
         borderTop: 'none',
         borderLeft: 'none',
         borderRadius: '0',
-        borderRight: 'none'
+        borderRight: 'none',
+        marginLeft: 10,
+        paddingLeft: 0,
+    },
+    nameInput: {
+        width: '80%',
+        border: 'none',
     },
 }
 
@@ -20,8 +26,6 @@ export default class BoxRoomSettings extends Component {
 			tooManyAttempts: false,
             problemProcessing: false,
             permissionToModify: false,
-            phoneChecked: false,
-            emailChecked: false,
             numFormFields: 1,
         }
     }
@@ -92,18 +96,24 @@ export default class BoxRoomSettings extends Component {
 		else {
             const uuid = window.localStorage.getItem('uuid');
             const form = document.getElementById('reqs-form');
-            const reqs = ['name'];
-            for(let element of form) {
-                if(element.type == 'text') {
-                    reqs.push(element.value);
+            const reqs = ["name"];
+            console.log(form);
+            // Iterate throught input fields to get reqs
+            // If the field is a checkbox and it's checked, grab the text of the next field
+            // If the field text is empty, ignore it
+            // Otherwise add it to the array 
+            for(let i = 0; i < form.length; i++) {
+                if(form[i].type === 'checkbox' && form[i].checked) {
+                    if(form[i+1].type === 'text' && form[i+1].value !== '') {
+                        reqs.push(form[i+1].value);
+                    }
                 }
             }
-            // Iterate throught input fields to get reqs
-            // If if field text is empty, ignore it
-            // Otherwise add it to the array 
             console.log(reqs);
-			createRoom(this.props.roomCode, uuid, reqs)
+            
+            createRoom(this.props.roomCode, uuid, reqs)
                 .then((data) => {
+                    
                     if (data.success) {
                         creationTimestamps.push(currentTime);
                         window.localStorage.setItem('creationTimestamps', JSON.stringify(creationTimestamps))
@@ -129,18 +139,9 @@ export default class BoxRoomSettings extends Component {
                     }
                 }
             )
-		}
+        }
     }
-    handlePhoneChange = () => {
-        this.setState({
-            phoneChecked: !this.state.phoneChecked,
-        })
-    }
-    handleEmailChange = () => {
-        this.setState({
-            emailChecked: !this.state.emailChecked,
-        })
-    }
+ 
     addRequirement = () => {
         this.setState({
             numFormFields: this.state.numFormFields+1,
@@ -152,11 +153,20 @@ export default class BoxRoomSettings extends Component {
             array.push(
                 <Form.Field className='reqs-input-field'>
                     <Checkbox tabIndex='-1' defaultChecked/>
-                    <input placeholder='Enter field' type='text' className='reqs-input' style={styles.reqsInput} autoFocus/>
+                    <input placeholder='Enter field' type='text' className='reqs-input' style={styles.reqsInput} autoFocus onKeyDown={(e) => {this.handleTab(e, i+1)}} />
                 </Form.Field>
             )
         }
         return array;
+    }
+    handleTab = (e, i) => {
+        if(e.keyCode === 9) {
+            if(i === this.state.numFormFields) {
+                e.preventDefault();
+                this.addRequirement();
+            }
+        }
+            
     }
     
   render() {
@@ -170,12 +180,12 @@ export default class BoxRoomSettings extends Component {
         { permissionToModify===true ? (
             <div className='content' style={{textAlign: 'left', alignSelf: 'left'}}>
                 <Form id='reqs-form'>
-                    <Form.Field>
-                        <Checkbox disabled checked name='name' label='Name' />
+                    <Form.Field className='reqs-input-field'>
+                        <Checkbox disabled tabIndex='-1' checked name='name' label="First and Last Name" />
                     </Form.Field>
                     {this.getFormFields()}
                     <Form.Field>
-                        <Icon name="plus" onClick={this.addRequirement}/>
+                        <Icon name="plus" style={{cursor: 'pointer'}} onClick={this.addRequirement}/>
                     </Form.Field>
                 </Form>
                 <button onClick={this.handleCreateRoom} style={{marginTop: '20px'}}>Create Room</button>
