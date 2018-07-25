@@ -4,7 +4,7 @@ import {socket_url} from '../consts';
 import {CSVLink} from 'react-csv';
 
 const socketURL = socket_url;
-const headers = [
+let headers = [
   {label: 'First Name', key: 'firstname'},
   {label: 'Last name', key: 'lastname'},
 ];
@@ -33,6 +33,10 @@ export default class BoxRoom extends Component {
           for (let key in users[0]) {
             if (users[0].hasOwnProperty(key)) {
               if(key !== 'firstname' && key !== 'lastname') {
+                headers = [
+                  {label: 'First Name', key: 'firstname'},
+                  {label: 'Last name', key: 'lastname'},
+                ];
                 headers.push({label: `${key}`, key: `${key.replace(/\s+/g, '')}`})
               }
             }
@@ -66,7 +70,9 @@ export default class BoxRoom extends Component {
                 {this.state.users.map((element, i) => {
                     if(element.firstname !== null) {
                       return(<p className='box-room-names-cell'>{element.firstname} {element.lastname !== 'empty' && element.lastname}</p>)
-                  }
+                    }
+                    else
+                      return null;
                 })}
               </div>
             )}
