@@ -55,7 +55,6 @@ export default class BoxRoom extends Component {
 
   render() {
     const { users } = this.state;
-    console.log(users); 
     return (
         <div className="box box-room">
         	<div className='header'>
