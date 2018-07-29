@@ -4,11 +4,9 @@ import {socket_url} from '../consts';
 import {CSVLink} from 'react-csv';
 
 const socketURL = socket_url;
-const headers = [
+let headers = [
   {label: 'First Name', key: 'firstname'},
   {label: 'Last name', key: 'lastname'},
-  {label: 'Phone', key: 'phone'},
-  {label: 'Email', key: 'email'},
 ];
 
 export default class BoxRoom extends Component {
@@ -19,10 +17,12 @@ export default class BoxRoom extends Component {
       socket: null,
     };
   }
+  
 
   componentWillMount() {
     this.initSocket();
   }
+
   initSocket = () => {
     const socket = io(socketURL);
     socket.on('connect', () => {
@@ -30,6 +30,17 @@ export default class BoxRoom extends Component {
       this.state.socket.emit('join-room', this.props.match.params.roomCode)
       this.state.socket.on('fill-page-with-users', (users) => {
         if(users) {
+          headers = [
+            {label: 'First Name', key: 'firstname'},
+            {label: 'Last name', key: 'lastname'},
+          ];
+          for (let key in users[0]) {
+            if (users[0].hasOwnProperty(key)) {
+              if(key !== 'firstname' && key !== 'lastname') {
+                headers.push({label: `${key}`, key: `${key.replace(/\s+/g, '')}`})
+              }
+            }
+          }
           this.setState({
             users: users,
           })
@@ -55,9 +66,11 @@ export default class BoxRoom extends Component {
             {this.state.users == null || !this.state.users.length ? 'There are currently no users' : (
               <div className='room-names-grid box-room'>
                 {this.state.users.map((element, i) => {
-                  if(element.firstname !== null) {
-                    return(<p className='box-room-names-cell'>{element.firstname} {element.lastname !== 'empty' && element.lastname}</p>)
-                  }
+                    if(element.firstname !== null) {
+                      return(<p className='box-room-names-cell'>{element.firstname} {element.lastname !== 'empty' && element.lastname}</p>)
+                    }
+                    else
+                      return null;
                 })}
               </div>
             )}

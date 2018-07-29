@@ -1,5 +1,9 @@
 @import url('./google-fonts.css');
 
+:root {
+  --title-font-family: 'Montserrat' !important;
+  --body-font-family: 'Montserrat' !important;
+}
 /* Portrait and Landscape */
 body {
   background-color: #8e44ad !important;/* fallback for old browsers */
@@ -11,12 +15,9 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
+  font-family: var(--body-font-family) !important;
 }
 
-:root {
-  --title-font-family: 'Montserrat' !important;
-  --body-font-family: 'Montserrat' !important;
-}
 p {
   font-family: var(--body-font-family);
 }
@@ -145,7 +146,6 @@ h1, h2, h3, h4, h5, h6 {
   border: 0;
   padding: 15px;
   font-size: 16px;
-  margin-bottom: 10px;
 }
 
 .box-validation {
@@ -172,6 +172,11 @@ h1, h2, h3, h4, h5, h6 {
 #enter-name-btn {
   margin-top: 15px;
 }
+.reqs-input-field {
+  display: flex;
+  align-items: center;
+}
+
 
 
 /*----------END BOX STYLING--------------*/
