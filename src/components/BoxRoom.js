@@ -30,18 +30,17 @@ export default class BoxRoom extends Component {
       this.state.socket.emit('join-room', this.props.match.params.roomCode)
       this.state.socket.on('fill-page-with-users', (users) => {
         if(users) {
+          headers = [
+            {label: 'First Name', key: 'firstname'},
+            {label: 'Last name', key: 'lastname'},
+          ];
           for (let key in users[0]) {
             if (users[0].hasOwnProperty(key)) {
               if(key !== 'firstname' && key !== 'lastname') {
-                headers = [
-                  {label: 'First Name', key: 'firstname'},
-                  {label: 'Last name', key: 'lastname'},
-                ];
                 headers.push({label: `${key}`, key: `${key.replace(/\s+/g, '')}`})
               }
             }
           }
-          console.log(headers);
           this.setState({
             users: users,
           })
