@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import io from 'socket.io-client';
 import {socket_url} from '../consts';
 import { getRequiredParams } from '../api';
+import { Divider } from 'semantic-ui-react';
+import { Link } from 'react-router-dom'
 
 const socketURL = socket_url;
 
@@ -14,6 +16,7 @@ const styles = {
 
 export default class BoxJoinRoom extends Component {
   constructor(props) {
+    console.log(props)
     super(props);
     this.state = {
       emptyName: null,
@@ -138,6 +141,12 @@ export default class BoxJoinRoom extends Component {
               <button id="enter-name-btn" onClick={this.joinRoom}>
                 Submit
               </button>
+              <Divider id='or' horizontal>or</Divider>
+              <Link to={`/room/${this.props.match.params.roomCode}`}>
+                <p>
+                  View Room Users
+                </p>
+              </Link>
             </div>
         }
         {emptyName
