@@ -16,7 +16,6 @@ const styles = {
 
 export default class BoxJoinRoom extends Component {
   constructor(props) {
-    console.log(props)
     super(props);
     this.state = {
       emptyName: null,
@@ -81,7 +80,6 @@ export default class BoxJoinRoom extends Component {
 
   joinRoom = () => {
     const reqs = document.getElementById('reqs');
-    console.log(reqs.childNodes);
     let reqArray = []
     reqs.childNodes.forEach((element) => {
       reqArray.push({[element.id]: element.value})
@@ -142,11 +140,7 @@ export default class BoxJoinRoom extends Component {
                 Submit
               </button>
               <Divider id='or' horizontal>or</Divider>
-              <Link to={`/room/${this.props.match.params.roomCode}`}>
-                <p>
-                  View Room Users
-                </p>
-              </Link>
+              
             </div>
         }
         {emptyName
@@ -170,6 +164,11 @@ export default class BoxJoinRoom extends Component {
               )
             )
         }
+        <Link to={`/room/${this.props.match.params.roomCode}`}>
+          <p>
+            View Room Users
+          </p>
+        </Link>
         </div>
       </div>
     );

@@ -97,7 +97,6 @@ export default class BoxRoomSettings extends Component {
             const uuid = window.localStorage.getItem('uuid');
             const form = document.getElementById('reqs-form');
             const reqs = ["name"];
-            console.log(form);
             // Iterate throught input fields to get reqs
             // If the field is a checkbox and it's checked, grab the text of the next field
             // If the field text is empty, ignore it
