@@ -131,7 +131,7 @@ export default class BoxJoinRoom extends Component {
                     if(i === 0) {
                       return (<input id={element} style={styles.inputFields} name={element} type="text" placeholder={`Enter First and Last Name`}/>)
                     }
-                    return(<input id={element} style={styles.inputFields} name={element} type="text" placeholder={`Enter ${element}`}/>)
+                    return(<input id={element} style={styles.inputFields} name={element} type="text" placeholder={`Enter ${element.split('-').join(' ')}`}/>)
                   }
                   )
                 }
