@@ -76,7 +76,7 @@ export default class BoxRoom extends Component {
             )}
             <br/>
             {users.length > 0 &&
-              <CSVLink data={this.state.users} style={{color: 'white'}} filename={"SignMeIn.csv"}  target="_blank" headers={headers}>
+              <CSVLink data={this.state.users} style={{color: 'white'}} filename={"SignMeIn.csv"}  target="_self" headers={headers}>
                 <button style={{width: '50%'}}>
                   Export
                 </button>
