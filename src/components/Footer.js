@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
 
 const footer = {
-    position: 'fixed',
+    position: 'absolute',
     left: 0,
     bottom: 5,
     width: '100%',
