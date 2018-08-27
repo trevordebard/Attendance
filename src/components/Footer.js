@@ -19,8 +19,8 @@ class Footer  extends Component {
             <div style={footer} className="footer">
                 Created by Trevor DeBardeleben
                 <br/>
-                <a style={a} href="mailto:trevordebard@gmail.com" target="_blank" ><i style={{fontSize: '1.2em'}} className="fa fa-envelope" />&nbsp;&nbsp;</a>
-                <a style={a} href="http://github.com/trevordebard" target="_blank"><i style={{fontSize: '1.2em'}} className="fa fa-github"></i></a>
+                <a style={a} href="mailto:trevordebard@gmail.com" rel="noopener noreferrer" target="_blank" ><i style={{fontSize: '1.2em'}} className="fa fa-envelope" />&nbsp;&nbsp;</a>
+                <a style={a} href="http://github.com/trevordebard" rel="noopener noreferrer" target="_blank"><i style={{fontSize: '1.2em'}} className="fa fa-github"></i></a>
             </div>
         );
     }

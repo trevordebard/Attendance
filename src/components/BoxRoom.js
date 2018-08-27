@@ -44,6 +44,10 @@ export default class BoxRoom extends Component {
           this.setState({
             users: users,
           })
+          const boxNames = document.getElementById('room-names');
+          if(boxNames){
+            boxNames.scrollTop = boxNames.scrollHeight;
+          }
         }
       })
     })
@@ -55,7 +59,7 @@ export default class BoxRoom extends Component {
   render() {
     const { users } = this.state;
     return (
-        <div className="box box-room">
+        <div id="room-names" className="box box-room">
         	<div className='header'>
             <h2 className='header-content' >Your room code is:
               <span className='header-content header-room-code'> {this.props.match.params.roomCode}</span>
@@ -64,7 +68,7 @@ export default class BoxRoom extends Component {
           <hr />
           <div className='content'>
             {this.state.users == null || !this.state.users.length ? 'There are currently no users' : (
-              <div className='room-names-grid box-room'>
+              <div  className='room-names-grid box-room'>
                 {this.state.users.map((element, i) => {
                     if(element.firstname !== null) {
                       return(<p className='box-room-names-cell'>{element.firstname} {element.lastname !== 'empty' && element.lastname}</p>)
