@@ -4,8 +4,7 @@ const express = require('express');
   const app = express();
 const dotenv = require('dotenv');
   dotenv.config();
-const db = require('./db');
-  db.connect();
+
 const dev = app.get('env') !== 'production';
 const PORT = process.env.PORT || 4006;
 
