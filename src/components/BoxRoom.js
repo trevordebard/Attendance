@@ -9,14 +9,14 @@ let headers = [
   {label: 'Last name', key: 'lastname'},
 ];
 const styles = {
-  content: {
-    marginTop: 30,
-  },
   header: {
-    position: 'absolute',
     backgroundColor: '#fff',
-    border: '1px solid #8e44ad',
-    padding: '5px'
+    padding: '5px',
+    position: 'sticky',
+    position: '-webkit-sticky',
+    position: 'sticky',
+    width: '100%',
+    top: 0,
   },
   headerContent: {
     display: 'inline',
@@ -29,11 +29,8 @@ const styles = {
   boxRoom: {
     width: '100%',
     textAlign: 'center',
-    paddingTop: 0,
   }
 }
-
-
 
 export default class BoxRoom extends Component {
   constructor(props) {
@@ -44,7 +41,6 @@ export default class BoxRoom extends Component {
     };
   }
   
-
   componentWillMount() {
     this.initSocket();
   }
