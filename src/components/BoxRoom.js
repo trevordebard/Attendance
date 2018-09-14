@@ -8,6 +8,32 @@ let headers = [
   {label: 'First Name', key: 'firstname'},
   {label: 'Last name', key: 'lastname'},
 ];
+const styles = {
+  content: {
+    marginTop: 30,
+  },
+  header: {
+    position: 'absolute',
+    backgroundColor: '#fff',
+    border: '1px solid #8e44ad',
+    padding: '5px'
+  },
+  headerContent: {
+    display: 'inline',
+    fontSize: '1.8em',
+  },
+  headerRoomCode: {
+    fontSize: '1.8em',
+    fontWeight: 'bold',
+  },
+  boxRoom: {
+    width: '100%',
+    textAlign: 'center',
+    paddingTop: 0,
+  }
+}
+
+
 
 export default class BoxRoom extends Component {
   constructor(props) {
@@ -59,14 +85,14 @@ export default class BoxRoom extends Component {
   render() {
     const { users } = this.state;
     return (
-        <div id="room-names" className="box box-room">
-        	<div className='header'>
-            <h2 className='header-content' >Your room code is:
+        <div id="room-names" className="box" style={styles.boxRoom}>
+        	<div style={styles.header}>
+            <h2 style={styles.headerContent} >Your room code is:
               <span className='header-content header-room-code'> {this.props.match.params.roomCode}</span>
             </h2>
           </div>
           <hr />
-          <div className='content'>
+          <div style={styles.content} className='content'>
             {this.state.users == null || !this.state.users.length ? 'There are currently no users' : (
               <div  className='room-names-grid box-room'>
                 {this.state.users.map((element, i) => {

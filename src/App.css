@@ -56,10 +56,7 @@ hr {
 
 
 /* -----------------BoxRoom-------------------------*/
-.box-room {
-  width: 100%;
-  text-align: center;
-}
+
 .room-names-grid {
   display: grid;
   padding: 10px;

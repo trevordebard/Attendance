@@ -8,12 +8,14 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Fader from 'react-fader'
 import Footer from './components/Footer';
 
+/**
+ * All of this UUID and roomCode code eventually needs to be done by the server.
+ */
 const uuid = window.localStorage.getItem('uuid');
 const roomCode = Math.random().toString(36).substr(2, 5);
 if(!uuid) {
 	window.localStorage.setItem('uuid', createUUID())
 }
-
 function createUUID() {
 	function s4() {
 	  return Math.floor((1 + Math.random()) * 0x10000)
@@ -21,7 +23,8 @@ function createUUID() {
 		.substring(1);
 	}
 	return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-  }
+}
+
 class App extends Component {
 	
 	render() {
