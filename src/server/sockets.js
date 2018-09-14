@@ -2,7 +2,6 @@ var api = require('../api');
 const addUser = api.addUser;
 const getUsers = api.getUsers;
 
-const db = require('./db');
 const io = require('./server.js').io;
 
 module.exports = (socket) => {
