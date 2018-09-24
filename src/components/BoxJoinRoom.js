@@ -80,6 +80,8 @@ export default class BoxJoinRoom extends Component {
 
   joinRoom = () => {
     const reqs = document.getElementById('reqs');
+    document.getElementById('enter-name-btn').disabled = true;
+
     let reqArray = []
     reqs.childNodes.forEach((element) => {
       reqArray.push({[element.id]: element.value})
@@ -103,7 +105,8 @@ export default class BoxJoinRoom extends Component {
         window.localStorage.setItem('roomsJoined', JSON.stringify(roomsArray));
      }
      else {
-       console.log(data);
+      document.getElementById('enter-name-btn').disabled = false;
+      console.log(data);
      }
     });
   }
