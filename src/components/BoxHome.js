@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
 import { doesRoomExist } from '../api';
-import { Divider, Transition } from 'semantic-ui-react';
+import { Divider, Transition, Message } from 'semantic-ui-react';
 import { withRouter } from 'react-router'
 
 const roomCode = Math.random().toString(36).substr(2, 5);
@@ -77,6 +77,12 @@ class BoxHome extends Component {
 	render() {
 		return (
 			<Transition animation='shake' visible={!this.state.shake} duration={1000}>
+				<div className='temp'>
+				<Message
+					header='Scheduled Maintenance'
+					content='Sign Me In will be down periodically durint the month of December for maintenance. I am working to prevent downtime in the future and make the site faster!'
+				/>
+
 				<div className="box">
 					<img src={require('../images/SMI_logo.png')} style={{width: '180px', height: 'auto'}} alt='Sign Me In'/>
 					<div className='header'>
@@ -99,6 +105,7 @@ class BoxHome extends Component {
 							<p id="room-code-invalid" className="box-validation">Sorry, that room does not exist.</p>
 						}
 					</div>
+				</div>
 				</div>
 			</Transition>
 			);

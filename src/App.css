@@ -36,6 +36,10 @@ hr {
 
 /*-------------BOX STYLING----------------*/
 .box {
+  position: absolute; /* REMOVE LATER */
+  left: 50%; /* REMOVE LATER */
+  top: 50%;/* REMOVE LATER */
+  transform: translate(-50%, -80%); /* REMOVE LATER */
   background: white;
   padding: 30px 45px 45px 45px;
   text-align: center;
@@ -188,4 +192,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 1.1rem !important;
 }
 
+.temp {
+  text-align: center;
+}
 
