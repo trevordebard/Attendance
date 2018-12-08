@@ -80,7 +80,7 @@ class BoxHome extends Component {
 				<div className='temp'>
 				<Message
 					header='Scheduled Maintenance'
-					content='Sign Me In will be down periodically durint the month of December for maintenance. I am working to prevent downtime in the future and make the site faster!'
+					content='Sign Me In will be down periodically during the month of December for maintenance. I am working to prevent downtime in the future and make the site faster!'
 				/>
 
 				<div className="box">
